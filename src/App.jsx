@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import './App.css'
 
-const EVENT_DATE = new Date('2026-11-14T17:00:00')
+const EVENT_DATE = new Date('2026-08-29T17:00:00')
 
 // ── Fade-in on scroll ──────────────────────────────────────
 function useFadeIn() {
@@ -179,15 +179,15 @@ function Events() {
           type="Ceremonia Religiosa"
           name="Parroquia de Ntra. Sra. del Perpetuo Socorro"
           address="Av. Gonzalitos 640 Norte"
-          city="Col. Mitras Centro, Monterrey, N.L."
+          city="Col. Mitras Centro, El Salto, Jalisco"
           time="5:00 PM"
         />
         <EventCard
           icon="✨"
           type="Recepción & Fiesta"
-          name="Salón Imperial Monterrey"
+          name="Salón Imperial El Salto"
           address="Blvd. Díaz Ordaz 120"
-          city="Col. Santa María, Monterrey, N.L."
+          city="Col. Santa María, El Salto, Jalisco"
           time="7:00 PM"
         />
       </div>
@@ -208,7 +208,7 @@ function Maps() {
         <div className="map-card">
           <iframe
             title="Mapa Iglesia"
-            src="https://maps.google.com/maps?q=Parroquia+Nuestra+Se%C3%B1ora+del+Perpetuo+Socorro+Monterrey+Mexico&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            src="https://maps.google.com/maps?q=Parroquia+Nuestra+Se%C3%B1ora+del+Perpetuo+Socorro+El Salto+Mexico&t=&z=15&ie=UTF8&iwloc=&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
@@ -220,7 +220,7 @@ function Maps() {
               Av. Gonzalitos 640 Norte, Mitras Centro
             </p>
             <a
-              href="https://www.google.com/maps/search/Parroquia+Nuestra+Señora+del+Perpetuo+Socorro+Monterrey"
+              href="https://www.google.com/maps/search/Parroquia+Nuestra+Señora+del+Perpetuo+Socorro+El Salto"
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
@@ -233,7 +233,7 @@ function Maps() {
         <div className="map-card">
           <iframe
             title="Mapa Salón"
-            src="https://maps.google.com/maps?q=Blvd+D%C3%ADaz+Ordaz+120+Monterrey+Nuevo+Leon+Mexico&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            src="https://maps.google.com/maps?q=Blvd+D%C3%ADaz+Ordaz+120+El Salto+Nuevo+Leon+Mexico&t=&z=15&ie=UTF8&iwloc=&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
@@ -241,11 +241,11 @@ function Maps() {
           <div className="map-card__info">
             <h3>✨ El Salón</h3>
             <p>
-              Salón Imperial Monterrey<br />
+              Salón Imperial El Salto<br />
               Blvd. Díaz Ordaz 120, Col. Santa María
             </p>
             <a
-              href="https://www.google.com/maps/search/Salon+Imperial+Monterrey+Blvd+Diaz+Ordaz"
+              href="https://www.google.com/maps/search/Salon+Imperial+El Salto+Blvd+Diaz+Ordaz"
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
@@ -428,7 +428,7 @@ function RSVP() {
             <span className="rsvp__icon" aria-hidden="true">🌸</span>
             <h3>¡Gracias por confirmar!</h3>
             <p>Tu respuesta ha sido recibida. No puedo esperar a compartir este día tan especial contigo.</p>
-            <p className="rsvp__love">Con amor, Karen Sofía ♡</p>
+            <p className="rsvp__love">Con amor, Karen Elizabeth ♡</p>
           </div>
         ) : (
           <form className="rsvp__form" onSubmit={submit} noValidate>
@@ -518,9 +518,9 @@ function RSVP() {
 function Footer() {
   return (
     <footer className="footer">
-      <span className="footer__name">Karen Sofía</span>
+      <span className="footer__name">Karen Elizabeth</span>
       <div className="ornament ornament--muted" aria-hidden="true"><span>✦</span></div>
-      <p className="footer__date">Sábado, 14 de Noviembre de 2026 · Monterrey, N.L.</p>
+      <p className="footer__date">Sábado, 29 de Agosto de 2026 · El Salto, Jalisco</p>
       <p className="footer__love">Con todo mi amor los espero ♡</p>
     </footer>
   )
