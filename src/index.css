@@ -1,0 +1,28 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  background: #FFF9F5;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  display: block;
+  text-align: unset;
+}
+
+p { margin: 0; }
+h1, h2, h3 { margin: 0; }
