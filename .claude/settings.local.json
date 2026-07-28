@@ -3,7 +3,16 @@
     "allow": [
       "Bash(npx vite *)",
       "Bash(npm install *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(node_modules/.bin/vite preview *)",
+      "Read(//tmp/**)",
+      "Bash(pkill -f \"vite preview\")",
+      "Bash(rm -rf scratch_crop)",
+      "Bash(node_modules/.bin/vite build *)",
+      "mcp__claude_ai_Hugging_Face__dynamic_space",
+      "Bash(python -c \"import gradio_client; print\\('gradio_client', gradio_client.__version__\\)\")",
+      "Bash(env)",
+      "Bash(python -c \"import urllib.request,ssl; print\\(urllib.request.urlopen\\('https://huggingface.co',timeout=8\\).status\\)\")"
     ]
   }
 }

@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom'
 const OPTIONS = [
   { to: '/',       label: 'Clásico' },
   { to: '/modern', label: 'Moderno' },
+  { to: '/page3',  label: 'Opción 3' },
 ]
 
 export default function OptionSwitcher() {

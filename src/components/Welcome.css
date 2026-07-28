@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500&display=swap');
+
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  background:
+    linear-gradient(160deg, #e6f0f8 0%, #d3e3f1 46%, #c3d8ec 100%);
+  transition: opacity 0.85s ease, transform 0.85s ease;
+}
+
+.welcome--leaving {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+/* Costura vertical del sobre, como en la referencia */
+.welcome__seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 58%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.85) 12%,
+    rgba(255,255,255,0.85) 88%,
+    rgba(255,255,255,0) 100%
+  );
+  box-shadow: -14px 0 24px -12px rgba(120,150,180,0.35);
+}
+
+.welcome__content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  margin-top: -8vh;
+  margin-right: 6vw;
+  animation: welcome-rise 1s ease both;
+}
+
+.welcome__mis {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(20px, 5vw, 30px);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #6d90b4;
+  margin: 0 0 0.1em;
+  padding-left: 0.42em;
+}
+
+.welcome__name {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-size: clamp(58px, 15vw, 118px);
+  line-height: 0.92;
+  color: #3f6699;
+  margin: 0;
+  text-shadow: 0 3px 18px rgba(120,150,190,0.35);
+}
+
+/* Sello de cera */
+.welcome__seal {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 58%;
+  transform: translate(-50%, 8px);
+  width: clamp(120px, 30vw, 176px);
+  height: clamp(120px, 30vw, 176px);
+  animation: welcome-rise 1.1s 0.15s ease both;
+}
+
+.welcome__seal-disc {
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fbf7ef 0%, #ece2cf 62%, #d9cbb0 100%);
+  box-shadow:
+    0 10px 22px rgba(120,140,170,0.4),
+    inset 0 2px 6px rgba(255,255,255,0.9),
+    inset 0 -6px 12px rgba(150,130,100,0.35);
+}
+
+.welcome__seal-inner {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  border: 1px solid rgba(150,130,100,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9c8a6a;
+  gap: 1px;
+}
+
+.welcome__tiara { width: 46%; height: auto; margin-bottom: 3px; }
+
+.welcome__seal-xv {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(20px, 6vw, 30px);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: #8c7a5a;
+}
+
+.welcome__seal-anios {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(10px, 2.6vw, 13px);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #a08e6e;
+}
+
+.welcome__flowers--seal {
+  position: absolute;
+  inset: -6% -18% -6% 40%;
+  width: 78%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 4px 6px rgba(120,150,180,0.3));
+}
+
+/* Castillo */
+.welcome__castle {
+  position: absolute;
+  left: -2vw;
+  bottom: 0;
+  z-index: 1;
+  width: min(62vw, 460px);
+  height: auto;
+  color: #9db8d6;
+  opacity: 0.9;
+  animation: welcome-fade 1.4s 0.2s ease both;
+}
+
+.welcome__hint {
+  position: absolute;
+  bottom: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 3.4vw, 16px);
+  letter-spacing: 0.16em;
+  color: #6d90b4;
+  margin: 0;
+  animation: welcome-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes welcome-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* El sello ya usa translate propio: variante sin desplazamiento vertical extra */
+.welcome__seal { animation-name: welcome-fade; }
+
+@keyframes welcome-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes welcome-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome, .welcome__content, .welcome__seal, .welcome__castle, .welcome__hint {
+    animation: none;
+  }
+}
