@@ -59,13 +59,35 @@
 /* ---- iconos base ---- */
 .page3 .p3-ic { width: 24px; height: 24px; color: var(--p3-navy); }
 
-/* ---- adornos florales ---- */
-.page3 .p3-floral { position: absolute; width: 132px; height: 132px; pointer-events: none; z-index: 1; }
-.page3 .p3-floral--tl  { top: -6px;   left: -10px; }
-.page3 .p3-floral--tl2 { top: -4px;   left: -14px; transform: scale(0.9); }
-.page3 .p3-floral--bl  { bottom: 6px; left: -16px; transform: scaleX(-1) scale(0.85); }
-.page3 .p3-floral--bl2 { bottom: -8px; left: -14px; transform: scaleX(-1); }
-.page3 .p3-floral--br  { bottom: 4px; right: -18px; transform: scaleX(-1) scale(0.8); }
+/* ---- adornos florales (acuarelas reales) ---- */
+/* Esquinas: la imagen viene con el ramo anclado abajo-izquierda; se
+   voltea con scale() para acomodarlo en cada esquina. */
+.page3 .p3-corner {
+  position: absolute;
+  width: clamp(118px, 33vw, 160px);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+.page3 .p3-corner--tl { top: -8px;    left: -8px;  transform: scaleY(-1); }
+.page3 .p3-corner--tr { top: -8px;    right: -8px; transform: scale(-1, -1); }
+.page3 .p3-corner--bl { bottom: -8px; left: -8px; }
+.page3 .p3-corner--br { bottom: -8px; right: -8px; transform: scaleX(-1); }
+
+/* Franjas / guirnaldas horizontales centradas */
+.page3 .p3-band {
+  display: block;
+  height: auto;
+  margin: 1.2rem auto 0.4rem;
+  pointer-events: none;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
+.page3 .p3-band--sm { width: min(80%, 330px); }
+.page3 .p3-band--xs { width: min(58%, 240px); }
+.page3 .p3-footer__band { width: 100%; margin: 0 auto 1.2rem; }
 
 /* ======================================================= Hero */
 .page3 .p3-hero { position: relative; width: 100%; }
@@ -116,14 +138,21 @@
 }
 
 /* reproductor de música */
-.page3 .p3-player { display: block; width: min(280px, 80%); margin: 1.6rem auto 0; text-decoration: none; }
-.page3 .p3-player__bar { position: relative; height: 3px; border-radius: 3px; background: rgba(30,67,116,0.25); margin-bottom: 1.1rem; }
-.page3 .p3-player__dot { position: absolute; left: 32%; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--p3-navy); transform: translate(-50%, -50%); }
+.page3 .p3-player { display: block; width: min(280px, 80%); margin: 1.6rem auto 0; text-align: center; }
+.page3 .p3-player__song { font-family: var(--p3-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--p3-navy); font-size: clamp(12px, 3.2vw, 14px); margin: 0 0 0.8rem; }
+.page3 .p3-player__song span { color: var(--p3-blue); }
+.page3 .p3-player__bar { position: relative; height: 4px; border-radius: 3px; background: rgba(30,67,116,0.22); margin-bottom: 1.1rem; cursor: pointer; }
+.page3 .p3-player__fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--p3-navy); }
+.page3 .p3-player__dot { position: absolute; left: 0; top: 50%; width: 11px; height: 11px; border-radius: 50%; background: var(--p3-navy); transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(30,67,116,0.4); }
 .page3 .p3-player__ctrls { display: flex; align-items: center; justify-content: center; gap: 1.1rem; color: var(--p3-navy); }
+.page3 .p3-player__btn { display: grid; place-items: center; padding: 0; border: none; background: none; color: var(--p3-navy); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.page3 .p3-player__btn:hover { color: var(--p3-navy-d); }
 .page3 .p3-player__ic { width: 20px; height: 20px; }
-.page3 .p3-player__play { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--p3-navy); box-shadow: 0 6px 16px rgba(30,67,116,0.35); transition: transform .2s ease; }
-.page3 .p3-player:hover .p3-player__play { transform: scale(1.06); }
-.page3 .p3-player__playic { width: 20px; height: 20px; color: #fff; margin-left: 2px; }
+.page3 .p3-player__play { display: grid; place-items: center; width: 46px; height: 46px; padding: 0; border: none; border-radius: 50%; background: var(--p3-navy); box-shadow: 0 6px 16px rgba(30,67,116,0.35); transition: transform .2s ease; cursor: pointer; }
+.page3 .p3-player__play:hover { transform: scale(1.06); }
+.page3 .p3-player__playic { width: 20px; height: 20px; color: #fff; }
+.page3 .p3-player__spotify { display: inline-block; margin-top: 1rem; font-family: var(--p3-serif); font-style: italic; font-size: clamp(12px, 3.2vw, 14px); color: var(--p3-blue); text-decoration: none; border-bottom: 1px solid rgba(95,127,166,0.4); }
+.page3 .p3-player__spotify:hover { color: var(--p3-navy); }
 
 /* fecha */
 .page3 .p3-date { margin-top: 0.5rem; display: inline-block; }
@@ -172,7 +201,7 @@
 
 /* ======================================================= Itinerario */
 .page3 .p3-itin { position: relative; padding: 3rem 1.4rem 3.4rem; text-align: center; }
-.page3 .p3-itin__line { position: relative; max-width: 340px; margin: 2rem auto 0; padding: 0.5rem 0; }
+.page3 .p3-itin__line { position: relative; z-index: 2; max-width: 340px; margin: 2rem auto 0; padding: 0.5rem 0; }
 .page3 .p3-itin__line::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: rgba(30,67,116,0.3); transform: translateX(-50%); }
 .page3 .p3-itin__item { position: relative; display: flex; align-items: center; gap: 0.8rem; width: 50%; padding: 0.7rem 0; }
 .page3 .p3-itin__item--l { justify-content: flex-end; margin-right: 50%; flex-direction: row; text-align: right; }

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# PNG originales de las flores (pesados) — en public se usan los .webp optimizados
+flores-originales/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

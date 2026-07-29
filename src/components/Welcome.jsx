@@ -8,6 +8,8 @@ export default function Welcome() {
   const open = useCallback(() => {
     if (leaving) return
     setLeaving(true)
+    // Avisa a los reproductores para que arranque la música con el gesto del clic
+    window.dispatchEvent(new Event('invite:open'))
     window.setTimeout(() => setGone(true), 900)
   }, [leaving])
 

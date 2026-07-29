@@ -12,7 +12,24 @@
       "mcp__claude_ai_Hugging_Face__dynamic_space",
       "Bash(python -c \"import gradio_client; print\\('gradio_client', gradio_client.__version__\\)\")",
       "Bash(env)",
-      "Bash(python -c \"import urllib.request,ssl; print\\(urllib.request.urlopen\\('https://huggingface.co',timeout=8\\).status\\)\")"
+      "Bash(python -c \"import urllib.request,ssl; print\\(urllib.request.urlopen\\('https://huggingface.co',timeout=8\\).status\\)\")",
+      "Bash(command -v cwebp)",
+      "Bash(command -v magick)",
+      "Bash(command -v convert)",
+      "Bash(command -v ffmpeg)",
+      "Bash(node -e \"try{require\\('sharp'\\);console.log\\('sharp OK'\\)}catch\\(e\\){console.log\\('no sharp'\\)}\")",
+      "Bash(python -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
+      "Bash(py -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
+      "Bash(py --version)",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import numpy; print\\('numpy', numpy.__version__\\)\")",
+      "Bash(mkdir -p flores-originales)",
+      "Bash(mv public/flores1.png public/flores2.png public/flores3.png public/flores4.png public/flores5.png public/flores6.png flores-originales/)",
+      "Bash(jobs -p)",
+      "Bash(xargs -r kill)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=coldplay+a+sky+full+of+stars&entity=song&limit=8\")",
+      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")"
     ]
   }
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import './Page3.css'
 import OptionSwitcher from '../components/OptionSwitcher'
+import { SONG, useAudioPlayer } from '../audio'
 
 /* ---------------------------------------------------------------- Datos */
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
@@ -52,6 +53,7 @@ const Icon = ({ name, className = 'p3-ic' }) => {
   const paths = {
     tiara: <><path {...p} d="M3 18h18l-1.6-9-4.4 4L12 6 9 13 4.6 9 3 18Z" /><circle cx="3" cy="8" r="1.1" fill="currentColor" stroke="none" /><circle cx="21" cy="8" r="1.1" fill="currentColor" stroke="none" /><circle cx="12" cy="4.4" r="1.2" fill="currentColor" stroke="none" /><path {...p} d="M2.4 20.4h19.2" /></>,
     play: <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />,
+    pause: <><rect x="7" y="5" width="3.4" height="14" rx="1.1" fill="currentColor" /><rect x="13.6" y="5" width="3.4" height="14" rx="1.1" fill="currentColor" /></>,
     prev: <><path d="M18 6v12l-8.5-6L18 6Z" fill="currentColor" /><rect x="6" y="6" width="1.8" height="12" rx="0.7" fill="currentColor" /></>,
     next: <><path d="M6 6v12l8.5-6L6 6Z" fill="currentColor" /><rect x="16.2" y="6" width="1.8" height="12" rx="0.7" fill="currentColor" /></>,
     shuffle: <><path {...p} d="M3 7h3.5l3 5m0 0 3 5H19" /><path {...p} d="M3 17h3.5l9-10H19" /><path {...p} d="M16.5 4.5 19.5 7l-3 2.5M16.5 14.5 19.5 17l-3 2.5" /></>,
@@ -73,36 +75,9 @@ const Icon = ({ name, className = 'p3-ic' }) => {
   return <svg viewBox="0 0 24 24" className={className} aria-hidden="true">{paths[name]}</svg>
 }
 
-/* ------------------------------------------------- Ramo floral (adorno) */
-const Floral = ({ className }) => (
-  <svg className={`p3-floral ${className}`} viewBox="0 0 200 200" aria-hidden="true">
-    <g opacity="0.95">
-      {/* hojas */}
-      <path d="M40 150c-15-25-15-55 0-80 8 28 8 52 0 80Z" fill="#9db4cf" opacity=".55" />
-      <path d="M150 60c22-8 46-6 66 6-24 10-46 12-66-6Z" fill="#a8bdd6" opacity=".5" />
-      <path d="M60 40c-6-18-2-36 8-50 8 18 6 36-8 50Z" fill="#c7b48f" opacity=".45" />
-      {/* rosa azul grande */}
-      <g>
-        <circle cx="70" cy="70" r="46" fill="#8ea9c9" opacity=".55" />
-        <circle cx="70" cy="70" r="34" fill="#7d9bc0" opacity=".6" />
-        <path d="M70 44c14 4 22 16 22 28s-10 24-22 24-22-12-22-24 8-24 22-28Z" fill="#9fb7d4" opacity=".7" />
-        <circle cx="70" cy="70" r="16" fill="#c3d2e5" opacity=".85" />
-        <circle cx="70" cy="70" r="7" fill="#e9d9b8" opacity=".9" />
-      </g>
-      {/* rosa blush */}
-      <g>
-        <circle cx="128" cy="120" r="34" fill="#e2c3cb" opacity=".6" />
-        <circle cx="128" cy="120" r="24" fill="#dcb9c3" opacity=".65" />
-        <circle cx="128" cy="120" r="12" fill="#f0dee2" opacity=".9" />
-        <circle cx="128" cy="120" r="5" fill="#e9d9b8" opacity=".9" />
-      </g>
-      {/* capullo azul pequeño */}
-      <g>
-        <circle cx="150" cy="150" r="20" fill="#93aecc" opacity=".6" />
-        <circle cx="150" cy="150" r="9" fill="#c6d4e6" opacity=".85" />
-      </g>
-    </g>
-  </svg>
+/* ------------------------------------------------- Adorno floral (imagen) */
+const Floral = ({ src, className }) => (
+  <img src={src} className={className} alt="" aria-hidden="true" loading="lazy" />
 )
 
 /* --------------------------------------------------------- Componentes */
@@ -119,7 +94,7 @@ function Quote() {
   const ref = useFadeIn()
   return (
     <section className="p3-quote">
-      <Floral className="p3-floral--tl" />
+      <Floral src="/flores1.webp" className="p3-corner p3-corner--tl" />
       <p ref={ref} className="p3-quote__text fade-in">
         “Hay momentos inolvidables que se atesoran en el corazón para siempre,
         por esa razón, quiero que compartas conmigo éste día tan especial.”
@@ -129,17 +104,42 @@ function Quote() {
 }
 
 function Player() {
+  const { playing, progress, toggle, seek, restart } = useAudioPlayer(SONG.src, { autoStart: true })
+  const barRef = useRef(null)
+  const onSeek = (e) => {
+    const el = barRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    seek((e.clientX - r.left) / r.width)
+  }
+  const pct = `${Math.round(progress * 100)}%`
   return (
-    <a className="p3-player" href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer" aria-label="Escuchar mi playlist en Spotify">
-      <div className="p3-player__bar"><span className="p3-player__dot" /></div>
-      <div className="p3-player__ctrls">
-        <Icon name="shuffle" className="p3-player__ic" />
-        <Icon name="prev" className="p3-player__ic" />
-        <span className="p3-player__play"><Icon name="play" className="p3-player__playic" /></span>
-        <Icon name="next" className="p3-player__ic" />
-        <Icon name="repeat" className="p3-player__ic" />
+    <div className="p3-player">
+      <p className="p3-player__song">{SONG.title} · <span>{SONG.artist}</span></p>
+      <div
+        className="p3-player__bar"
+        ref={barRef}
+        onClick={onSeek}
+        role="slider"
+        aria-label="Progreso de la canción"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress * 100)}
+      >
+        <span className="p3-player__fill" style={{ width: pct }} />
+        <span className="p3-player__dot" style={{ left: pct }} />
       </div>
-    </a>
+      <div className="p3-player__ctrls">
+        <button type="button" className="p3-player__btn" aria-label="Aleatorio"><Icon name="shuffle" className="p3-player__ic" /></button>
+        <button type="button" className="p3-player__btn" onClick={restart} aria-label="Reiniciar"><Icon name="prev" className="p3-player__ic" /></button>
+        <button type="button" className="p3-player__play" onClick={toggle} aria-label={playing ? 'Pausar' : 'Reproducir'}>
+          <Icon name={playing ? 'pause' : 'play'} className="p3-player__playic" />
+        </button>
+        <button type="button" className="p3-player__btn" onClick={restart} aria-label="Siguiente"><Icon name="next" className="p3-player__ic" /></button>
+        <button type="button" className="p3-player__btn" aria-label="Repetir"><Icon name="repeat" className="p3-player__ic" /></button>
+      </div>
+      <a className="p3-player__spotify" href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer">Abrir en Spotify</a>
+    </div>
   )
 }
 
@@ -224,12 +224,12 @@ function Places() {
   const ref = useFadeIn()
   return (
     <section className="p3-places">
-      <Floral className="p3-floral--tl2" />
+      <Floral src="/flores2.webp" className="p3-corner p3-corner--tl" />
       <div ref={ref} className="p3-places__grid fade-in">
         <PlaceCard icon="church" title="Misa" {...MISA} />
         <PlaceCard icon="cheers" title="Recepción" {...RECEPCION} />
       </div>
-      <Floral className="p3-floral--br" />
+      <Floral src="/flores1.webp" className="p3-corner p3-corner--br" />
     </section>
   )
 }
@@ -239,6 +239,7 @@ function Itinerary() {
   return (
     <section className="p3-itin">
       <h2 className="p3-heading">Itinerario de Actividades</h2>
+      <Floral src="/flores5.webp" className="p3-band p3-band--sm" />
       <div ref={ref} className="p3-itin__line fade-in">
         {ITINERARY.map((it, i) => (
           <div key={it.label} className={`p3-itin__item ${i % 2 ? 'p3-itin__item--r' : 'p3-itin__item--l'}`}>
@@ -250,7 +251,6 @@ function Itinerary() {
           </div>
         ))}
       </div>
-      <Floral className="p3-floral--bl" />
     </section>
   )
 }
@@ -260,6 +260,7 @@ function DressCode() {
   return (
     <section className="p3-dress">
       <div ref={ref} className="fade-in">
+        <Floral src="/flores3.webp" className="p3-band p3-band--xs" />
         <h2 className="p3-heading">Código de Vestimenta</h2>
         <p className="p3-dress__fmt">Formal</p>
         <div className="p3-dress__icons">
@@ -276,6 +277,7 @@ function Gifts() {
   return (
     <section className="p3-gifts">
       <div ref={ref} className="fade-in">
+        <Floral src="/flores4.webp" className="p3-band p3-band--sm" />
         <Icon name="gift" className="p3-gifts__ic" />
         <h2 className="p3-heading">Sugerencia de Regalos</h2>
         <p className="p3-gifts__text">
@@ -315,7 +317,7 @@ function Rsvp() {
 function Footer() {
   return (
     <footer className="p3-footer">
-      <Floral className="p3-floral--bl2" />
+      <Floral src="/flores6.webp" className="p3-band p3-footer__band" />
       <p className="p3-footer__line">Esperamos contar con su presencia</p>
       <p className="p3-footer__thanks">¡Muchas Gracias!</p>
     </footer>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import '../App.css'
 import OptionSwitcher from '../components/OptionSwitcher'
+import { SONG, useAudioPlayer } from '../audio'
 
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
 
@@ -227,6 +228,50 @@ function DressCode() {
   )
 }
 
+function FeaturedSong() {
+  const { playing, progress, toggle, seek } = useAudioPlayer(SONG.src)
+  const barRef = useRef(null)
+  const onSeek = (e) => {
+    const el = barRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    seek((e.clientX - r.left) / r.width)
+  }
+  return (
+    <div className="song">
+      <button
+        type="button"
+        className="song__play"
+        onClick={toggle}
+        aria-label={playing ? 'Pausar' : 'Reproducir'}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          {playing
+            ? <g fill="currentColor"><rect x="7" y="5" width="3.4" height="14" rx="1.1" /><rect x="13.6" y="5" width="3.4" height="14" rx="1.1" /></g>
+            : <path fill="currentColor" d="M8 5.5v13l11-6.5-11-6.5Z" />}
+        </svg>
+      </button>
+      <div className="song__body">
+        <p className="song__eyebrow">La canción de mi noche</p>
+        <p className="song__title">{SONG.title}</p>
+        <p className="song__artist">{SONG.artist}</p>
+        <div
+          className="song__bar"
+          ref={barRef}
+          onClick={onSeek}
+          role="slider"
+          aria-label="Progreso de la canción"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress * 100)}
+        >
+          <span className="song__fill" style={{ width: `${progress * 100}%` }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Spotify() {
   const ref = useFadeIn()
   return (
@@ -235,6 +280,7 @@ function Spotify() {
       <h2 className="title">Mi Playlist</h2>
       <p className="subtitle">Las canciones que me acompañarán en este día especial</p>
       <div className="ornament" aria-hidden="true"><span>✦</span></div>
+      <FeaturedSong />
       <div className="spotify__wrap fade-in" ref={ref}>
         <iframe
           title="Playlist Karen Elizabeth XV"
