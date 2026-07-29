@@ -6,7 +6,6 @@ import { SONG, useAudioPlayer } from '../audio'
 /* ---------------------------------------------------------------- Datos */
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
 
-const SPOTIFY_URL = 'https://open.spotify.com/playlist/2201cipi8KdUD35HkObKjO'
 const RSVP_WHATSAPP = '5218100000000' // ← reemplazar por el número real de confirmación
 
 const MISA = {
@@ -27,8 +26,18 @@ const ITINERARY = [
   { time: '8:00 PM',  label: 'Cena',            icon: 'dinner' },
   { time: '9:00 PM',  label: 'Vals',            icon: 'dance' },
   { time: '9:30 PM',  label: 'Brindis',         icon: 'champagne' },
-  { time: '10:00 PM', label: 'Torta',           icon: 'cake' },
-  { time: '12:00 AM', label: 'Despedida',       icon: 'fireworks' },
+  { time: '10:00 PM', label: 'Pastel',          icon: 'cake' },
+  { time: '2:00 AM',  label: 'Despedida',       icon: 'fireworks' },
+]
+
+/* Paleta de colores sugerida (misma en ambos diseños) */
+const SWATCHES = [
+  { hex: '#C9A96E', name: 'Dorado' },
+  { hex: '#B76E79', name: 'Rosa Oro' },
+  { hex: '#7D9B76', name: 'Verde Salvia' },
+  { hex: '#8B7BA8', name: 'Lavanda' },
+  { hex: '#4A7C9E', name: 'Azul Acero' },
+  { hex: '#2C1810', name: 'Chocolate' },
 ]
 
 /* ------------------------------------------------------- Animación fade */
@@ -83,10 +92,13 @@ const Floral = ({ src, className }) => (
 /* --------------------------------------------------------- Componentes */
 function Hero() {
   return (
-    <section className="p3-hero">
-      <img src="/p3-foto1.webp" alt="Karen Elizabeth" className="p3-hero__img" />
-      <div className="p3-hero__fade" aria-hidden="true" />
-    </section>
+    // <section className="p3-hero">
+    //   {/* <img src="/p3-foto1.webp" alt="Karen Elizabeth" className="p3-hero__img" /> */}
+    //   <div className="p3-hero__fade" aria-hidden="true" />
+    // </section>
+    <div>
+      <div style={{ height: '32px' }} />
+    </div>
   )
 }
 
@@ -104,7 +116,7 @@ function Quote() {
 }
 
 function Player() {
-  const { playing, progress, toggle, seek, restart } = useAudioPlayer(SONG.src, { autoStart: true })
+  const { playing, progress, toggle, seek, restart } = useAudioPlayer(SONG.src, { autoStart: true, fallback: SONG.fallback })
   const barRef = useRef(null)
   const onSeek = (e) => {
     const el = barRef.current
@@ -115,7 +127,6 @@ function Player() {
   const pct = `${Math.round(progress * 100)}%`
   return (
     <div className="p3-player">
-      <p className="p3-player__song">{SONG.title} · <span>{SONG.artist}</span></p>
       <div
         className="p3-player__bar"
         ref={barRef}
@@ -138,7 +149,6 @@ function Player() {
         <button type="button" className="p3-player__btn" onClick={restart} aria-label="Siguiente"><Icon name="next" className="p3-player__ic" /></button>
         <button type="button" className="p3-player__btn" aria-label="Repetir"><Icon name="repeat" className="p3-player__ic" /></button>
       </div>
-      <a className="p3-player__spotify" href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer">Abrir en Spotify</a>
     </div>
   )
 }
@@ -200,9 +210,8 @@ function Countdown() {
 }
 
 function Photo({ src }) {
-  const ref = useFadeIn()
   return (
-    <section className="p3-photo fade-in" ref={ref}>
+    <section className="p3-photo">
       <img src={src} alt="Karen Elizabeth" loading="lazy" />
     </section>
   )
@@ -267,8 +276,44 @@ function DressCode() {
           <Icon name="suit" className="p3-dress__ic" />
           <Icon name="dress" className="p3-dress__ic" />
         </div>
+        <p className="p3-dress__palette-lbl">Paleta de colores sugerida</p>
+        <div className="p3-dress__palette">
+          {SWATCHES.map((s) => (
+            <div key={s.hex} className="p3-swatch">
+              <span className="p3-swatch__dot" style={{ background: s.hex }} />
+              <span className="p3-swatch__name">{s.name}</span>
+            </div>
+          ))}
+        </div>
+        <p className="p3-dress__note">
+          Se solicita amablemente no utilizar <strong>blanco</strong>, reservado para la festejada.
+        </p>
       </div>
     </section>
+  )
+}
+
+function Playlist() {
+  const ref = useFadeIn()
+  return (
+    <section className="p3-playlist">
+      <div ref={ref} className="fade-in">
+        <h2 className="p3-heading">Mi Playlist</h2>
+        <p className="p3-playlist__note">Las canciones que sonarán en mi noche</p>
+        <div className="p3-playlist__wrap">
+          <iframe
+            title="Playlist Karen Elizabeth XV"
+            src="https://open.spotify.com/embed/playlist/5j0IZEXjaocvi9L0r9imxb?utm_source=generator&theme=0"
+            width="100%"
+            height="380"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+    
   )
 }
 
@@ -307,7 +352,7 @@ function Rsvp() {
       <div ref={ref} className="fade-in">
         <Icon name="whatsapp" className="p3-rsvp__ic" />
         <h2 className="p3-heading">Confirmar Asistencia</h2>
-        <p className="p3-rsvp__note">Te pedimos confirmar antes del 31 de octubre de 2026</p>
+        <p className="p3-rsvp__note">Te pedimos confirmar antes del 22 de agosto de 2026</p>
         <a className="p3-btn" href={wa} target="_blank" rel="noopener noreferrer">Confirmar aquí</a>
       </div>
     </section>
@@ -337,6 +382,7 @@ export default function Page3() {
       <Itinerary />
       <Photo src="/p3-foto2.webp" />
       <DressCode />
+      <Playlist />
       <Gifts />
       <Rsvp />
       <Footer />

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import '../App.css'
 import OptionSwitcher from '../components/OptionSwitcher'
 import { SONG, useAudioPlayer } from '../audio'
@@ -24,9 +24,9 @@ const NAV_LINKS = [
   { href: '#inicio',       label: 'Inicio' },
   { href: '#evento',       label: 'Evento' },
   { href: '#lugar',        label: 'Lugar' },
+  { href: '#itinerario',   label: 'Itinerario' },
   { href: '#vestimenta',   label: 'Vestimenta' },
   { href: '#musica',       label: 'Música' },
-  { href: '#galeria',      label: 'Galería' },
   { href: '#regalos',      label: 'Regalos' },
   { href: '#confirmacion', label: 'RSVP' },
 ]
@@ -176,6 +176,40 @@ function Maps() {
   )
 }
 
+const ITINERARY = [
+  { time: '5:00 PM',  label: 'Misa',            icon: '⛪' },
+  { time: '6:30 PM',  label: 'Sesión de fotos', icon: '📸' },
+  { time: '7:00 PM',  label: 'Recepción',       icon: '🥂' },
+  { time: '8:00 PM',  label: 'Cena',            icon: '🍽️' },
+  { time: '9:00 PM',  label: 'Vals',            icon: '💃' },
+  { time: '9:30 PM',  label: 'Brindis',         icon: '🍾' },
+  { time: '10:00 PM', label: 'Pastel',          icon: '🎂' },
+  { time: '2:00 AM',  label: 'Despedida',       icon: '🎆' },
+]
+
+function Itinerary() {
+  const ref = useFadeIn()
+  return (
+    <section className="itinerary" id="itinerario">
+      <p className="label">El orden de la noche</p>
+      <h2 className="title">Itinerario</h2>
+      <p className="subtitle">Así viviremos esta celebración</p>
+      <div className="ornament" aria-hidden="true"><span>✦</span></div>
+      <div className="timeline fade-in" ref={ref}>
+        {ITINERARY.map(it => (
+          <div className="timeline__item" key={it.label}>
+            <span className="timeline__icon" aria-hidden="true">{it.icon}</span>
+            <div className="timeline__content">
+              <span className="timeline__time">{it.time}</span>
+              <span className="timeline__label">{it.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 const SWATCHES = [
   { hex: '#C9A96E', name: 'Dorado' },
   { hex: '#B76E79', name: 'Rosa Oro' },
@@ -229,7 +263,7 @@ function DressCode() {
 }
 
 function FeaturedSong() {
-  const { playing, progress, toggle, seek } = useAudioPlayer(SONG.src)
+  const { playing, progress, toggle, seek, restart } = useAudioPlayer(SONG.src, { fallback: SONG.fallback })
   const barRef = useRef(null)
   const onSeek = (e) => {
     const el = barRef.current
@@ -237,36 +271,43 @@ function FeaturedSong() {
     const r = el.getBoundingClientRect()
     seek((e.clientX - r.left) / r.width)
   }
+  const pct = `${Math.round(progress * 100)}%`
+  const p = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' }
   return (
     <div className="song">
-      <button
-        type="button"
-        className="song__play"
-        onClick={toggle}
-        aria-label={playing ? 'Pausar' : 'Reproducir'}
+      <div
+        className="song__bar"
+        ref={barRef}
+        onClick={onSeek}
+        role="slider"
+        aria-label="Progreso de la canción"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress * 100)}
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          {playing
-            ? <g fill="currentColor"><rect x="7" y="5" width="3.4" height="14" rx="1.1" /><rect x="13.6" y="5" width="3.4" height="14" rx="1.1" /></g>
-            : <path fill="currentColor" d="M8 5.5v13l11-6.5-11-6.5Z" />}
-        </svg>
-      </button>
-      <div className="song__body">
-        <p className="song__eyebrow">La canción de mi noche</p>
-        <p className="song__title">{SONG.title}</p>
-        <p className="song__artist">{SONG.artist}</p>
-        <div
-          className="song__bar"
-          ref={barRef}
-          onClick={onSeek}
-          role="slider"
-          aria-label="Progreso de la canción"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progress * 100)}
-        >
-          <span className="song__fill" style={{ width: `${progress * 100}%` }} />
-        </div>
+        <span className="song__fill" style={{ width: pct }} />
+        <span className="song__dot" style={{ left: pct }} />
+      </div>
+      <div className="song__ctrls">
+        <button type="button" className="song__btn" aria-label="Aleatorio">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path {...p} d="M3 7h3.5l3 5m0 0 3 5H19" /><path {...p} d="M3 17h3.5l9-10H19" /><path {...p} d="M16.5 4.5 19.5 7l-3 2.5M16.5 14.5 19.5 17l-3 2.5" /></svg>
+        </button>
+        <button type="button" className="song__btn" onClick={restart} aria-label="Reiniciar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6v12l-8.5-6L18 6Z" fill="currentColor" /><rect x="6" y="6" width="1.8" height="12" rx="0.7" fill="currentColor" /></svg>
+        </button>
+        <button type="button" className="song__play" onClick={toggle} aria-label={playing ? 'Pausar' : 'Reproducir'}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            {playing
+              ? <g fill="currentColor"><rect x="7" y="5" width="3.4" height="14" rx="1.1" /><rect x="13.6" y="5" width="3.4" height="14" rx="1.1" /></g>
+              : <path fill="currentColor" d="M8 5.5v13l11-6.5-11-6.5Z" />}
+          </svg>
+        </button>
+        <button type="button" className="song__btn" onClick={restart} aria-label="Siguiente">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6v12l8.5-6L6 6Z" fill="currentColor" /><rect x="16.2" y="6" width="1.8" height="12" rx="0.7" fill="currentColor" /></svg>
+        </button>
+        <button type="button" className="song__btn" aria-label="Repetir">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path {...p} d="M4 9V8a3 3 0 0 1 3-3h9" /><path {...p} d="M20 15v1a3 3 0 0 1-3 3H8" /><path {...p} d="m14 2.5 2.5 2.5L14 7.5M10 16.5 7.5 19l2.5 2.5" /></svg>
+        </button>
       </div>
     </div>
   )
@@ -285,49 +326,13 @@ function Spotify() {
         <iframe
           title="Playlist Karen Elizabeth XV"
           style={{ borderRadius: 12 }}
-          src="https://open.spotify.com/embed/playlist/2201cipi8KdUD35HkObKjO?utm_source=generator&theme=0"
+          src="https://open.spotify.com/embed/playlist/5j0IZEXjaocvi9L0r9imxb?utm_source=generator&theme=0"
           width="100%"
           height="480"
           frameBorder="0"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"
         />
-      </div>
-    </section>
-  )
-}
-
-const GALLERY_PHOTOS = [
-  { id: 1,  src: 'https://picsum.photos/seed/k01/600/400' },
-  { id: 2,  src: 'https://picsum.photos/seed/k02/400/580' },
-  { id: 3,  src: 'https://picsum.photos/seed/k03/600/400' },
-  { id: 4,  src: 'https://picsum.photos/seed/k04/600/500' },
-  { id: 5,  src: 'https://picsum.photos/seed/k05/400/600' },
-  { id: 6,  src: 'https://picsum.photos/seed/k06/600/400' },
-  { id: 7,  src: 'https://picsum.photos/seed/k07/600/400' },
-  { id: 8,  src: 'https://picsum.photos/seed/k08/400/520' },
-  { id: 9,  src: 'https://picsum.photos/seed/k09/600/400' },
-  { id: 10, src: 'https://picsum.photos/seed/k10/600/600' },
-  { id: 11, src: 'https://picsum.photos/seed/k11/400/580' },
-  { id: 12, src: 'https://picsum.photos/seed/k12/600/400' },
-]
-
-function Gallery() {
-  const ref = useFadeIn()
-  return (
-    <section className="gallery" id="galeria">
-      <p className="label">Nuestros Momentos</p>
-      <h2 className="title">Galería de Fotos</h2>
-      <p className="subtitle">Los recuerdos más especiales de este día único</p>
-      <div className="ornament" aria-hidden="true"><span>✦</span></div>
-      <p className="gallery__note">Las fotos de la celebración estarán disponibles muy pronto ✦</p>
-      <div className="gallery__masonry fade-in" ref={ref}>
-        {GALLERY_PHOTOS.map(p => (
-          <div key={p.id} className="gallery__item">
-            <img src={p.src} alt={`Recuerdo ${p.id}`} loading="lazy" />
-            <div className="gallery__overlay"><span>✦</span></div>
-          </div>
-        ))}
       </div>
     </section>
   )
@@ -362,75 +367,26 @@ function Gifts() {
   )
 }
 
-const FORM_INIT = { name: '', phone: '', attend: 'yes', guests: '0', diet: '', message: '' }
-
-function Field({ label, children }) {
-  return (
-    <div className="field">
-      <label className="field__lbl">{label}</label>
-      {children}
-    </div>
-  )
-}
+const RSVP_WHATSAPP = '5218100000000' // ← reemplazar por el número real de confirmación
 
 function RSVP() {
-  const [form, setForm] = useState(FORM_INIT)
-  const [done, setDone] = useState(false)
   const ref = useFadeIn()
-  const set = useCallback(k => e => setForm(f => ({ ...f, [k]: e.target.value })), [])
-  const submit = e => { e.preventDefault(); setDone(true) }
+  const wa = `https://wa.me/${RSVP_WHATSAPP}?text=${encodeURIComponent('¡Hola! Confirmo mi asistencia a los XV años de Karen Elizabeth.')}`
   return (
     <section className="rsvp" id="confirmacion">
       <p className="label">Confirmación de Asistencia</p>
       <h2 className="title">¿Nos acompañas?</h2>
-      <p className="subtitle">Confirma tu asistencia antes del 31 de octubre de 2026</p>
+      <p className="subtitle">Confirma tu asistencia antes del 22 de agosto de 2026</p>
       <div className="ornament" aria-hidden="true"><span>✦</span></div>
       <div className="rsvp__box fade-in" ref={ref}>
-        {done ? (
-          <div className="rsvp__success">
-            <span className="rsvp__icon" aria-hidden="true">🌸</span>
-            <h3>¡Gracias por confirmar!</h3>
-            <p>Tu respuesta ha sido recibida. No puedo esperar a compartir este día tan especial contigo.</p>
-            <p className="rsvp__love">Con amor, Karen Elizabeth ♡</p>
-          </div>
-        ) : (
-          <form className="rsvp__form" onSubmit={submit} noValidate>
-            <Field label="Nombre completo">
-              <input type="text" value={form.name} onChange={set('name')} placeholder="Tu nombre completo" required />
-            </Field>
-            <Field label="Teléfono / WhatsApp">
-              <input type="tel" value={form.phone} onChange={set('phone')} placeholder="+52 81 0000 0000" />
-            </Field>
-            <Field label="¿Asistirás?">
-              <div className="radio-group">
-                <label className="radio-label"><input type="radio" name="attend" value="yes" checked={form.attend === 'yes'} onChange={set('attend')} /> Sí, ahí estaré 🎉</label>
-                <label className="radio-label"><input type="radio" name="attend" value="no"  checked={form.attend === 'no'}  onChange={set('attend')} /> No podré asistir</label>
-              </div>
-            </Field>
-            <Field label="Número de acompañantes">
-              <select value={form.guests} onChange={set('guests')}>
-                <option value="0">Solo yo</option>
-                <option value="1">1 acompañante</option>
-                <option value="2">2 acompañantes</option>
-                <option value="3">3 acompañantes</option>
-                <option value="4+">4 o más</option>
-              </select>
-            </Field>
-            <Field label="¿Restricción alimentaria?">
-              <select value={form.diet} onChange={set('diet')}>
-                <option value="">Ninguna</option>
-                <option value="vegetariano">Vegetariano</option>
-                <option value="vegano">Vegano</option>
-                <option value="sin-gluten">Sin gluten</option>
-                <option value="otra">Otra</option>
-              </select>
-            </Field>
-            <Field label="Mensaje para la festejada (opcional)">
-              <textarea value={form.message} onChange={set('message')} placeholder="Escríbeme algo especial..." />
-            </Field>
-            <button type="submit" className="rsvp__submit">Confirmar Asistencia</button>
-          </form>
-        )}
+        <p className="rsvp__cta-text">Da clic en el botón y confírmame por WhatsApp</p>
+        <a className="rsvp__wa" href={wa} target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20Z" />
+            <path fill="currentColor" d="M9.2 8.6c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3 0 .6.4.7 1.2 1.5 2 1.9.3.1.4.1.6-.1l.5-.6c.2-.2.3-.2.6-.1l1.5.7c.3.1.4.3.4.5 0 .8-.6 1.5-1.4 1.6-.7.1-1.5.2-3.6-.9-2-1-3.3-3.1-3.4-3.3-.1-.2-.8-1.1-.8-2.1 0-1 .5-1.5.7-1.7Z" />
+          </svg>
+          Confirmar por WhatsApp
+        </a>
       </div>
     </section>
   )
@@ -455,9 +411,9 @@ export default function Classic() {
       <Countdown />
       <Events />
       <Maps />
+      <Itinerary />
       <DressCode />
       <Spotify />
-      <Gallery />
       <Gifts />
       <RSVP />
       <Footer />

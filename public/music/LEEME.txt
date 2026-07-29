@@ -1,0 +1,22 @@
+CÓMO PONER LA CANCIÓN COMPLETA
+==============================
+
+1. Consigue tu archivo MP3 de "A Sky Full of Stars" (con licencia / de tu
+   propiedad).
+
+2. Renómbralo EXACTAMENTE así:
+
+      a-sky-full-of-stars.mp3
+
+3. Colócalo en esta misma carpeta (public/music/).
+
+Listo. El reproductor lo tomará automáticamente y sonará la canción completa
+tanto en Opción 3 como en Clásico.
+
+Mientras el archivo no exista, el reproductor usa un preview legal de 30
+segundos como respaldo, así que nunca se queda en silencio.
+
+Notas:
+- Si prefieres otro nombre o formato (.m4a, .ogg), avísame y ajusto la ruta
+  en src/audio.js (constante SONG.src).
+- Un MP3 típico de 4-5 min pesa ~4-8 MB; está bien para web.

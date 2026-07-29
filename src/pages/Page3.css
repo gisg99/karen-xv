@@ -139,8 +139,6 @@
 
 /* reproductor de música */
 .page3 .p3-player { display: block; width: min(280px, 80%); margin: 1.6rem auto 0; text-align: center; }
-.page3 .p3-player__song { font-family: var(--p3-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--p3-navy); font-size: clamp(12px, 3.2vw, 14px); margin: 0 0 0.8rem; }
-.page3 .p3-player__song span { color: var(--p3-blue); }
 .page3 .p3-player__bar { position: relative; height: 4px; border-radius: 3px; background: rgba(30,67,116,0.22); margin-bottom: 1.1rem; cursor: pointer; }
 .page3 .p3-player__fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--p3-navy); }
 .page3 .p3-player__dot { position: absolute; left: 0; top: 50%; width: 11px; height: 11px; border-radius: 50%; background: var(--p3-navy); transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(30,67,116,0.4); }
@@ -151,8 +149,6 @@
 .page3 .p3-player__play { display: grid; place-items: center; width: 46px; height: 46px; padding: 0; border: none; border-radius: 50%; background: var(--p3-navy); box-shadow: 0 6px 16px rgba(30,67,116,0.35); transition: transform .2s ease; cursor: pointer; }
 .page3 .p3-player__play:hover { transform: scale(1.06); }
 .page3 .p3-player__playic { width: 20px; height: 20px; color: #fff; }
-.page3 .p3-player__spotify { display: inline-block; margin-top: 1rem; font-family: var(--p3-serif); font-style: italic; font-size: clamp(12px, 3.2vw, 14px); color: var(--p3-blue); text-decoration: none; border-bottom: 1px solid rgba(95,127,166,0.4); }
-.page3 .p3-player__spotify:hover { color: var(--p3-navy); }
 
 /* fecha */
 .page3 .p3-date { margin-top: 0.5rem; display: inline-block; }
@@ -204,8 +200,8 @@
 .page3 .p3-itin__line { position: relative; z-index: 2; max-width: 340px; margin: 2rem auto 0; padding: 0.5rem 0; }
 .page3 .p3-itin__line::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: rgba(30,67,116,0.3); transform: translateX(-50%); }
 .page3 .p3-itin__item { position: relative; display: flex; align-items: center; gap: 0.8rem; width: 50%; padding: 0.7rem 0; }
-.page3 .p3-itin__item--l { justify-content: flex-end; margin-right: 50%; flex-direction: row; text-align: right; }
-.page3 .p3-itin__item--r { justify-content: flex-start; margin-left: 50%; flex-direction: row-reverse; text-align: left; }
+.page3 .p3-itin__item--l { justify-content: flex-start; margin-right: 50%; flex-direction: row; text-align: left; }
+.page3 .p3-itin__item--r { justify-content: flex-start; margin-left: 50%; flex-direction: row-reverse; text-align: right; }
 .page3 .p3-itin__item::after { content: ''; position: absolute; top: 50%; width: 14px; height: 2px; background: rgba(30,67,116,0.3); }
 .page3 .p3-itin__item--l::after { right: -1px; transform: translateY(-50%); }
 .page3 .p3-itin__item--r::after { left: -1px; transform: translateY(-50%); }
@@ -220,6 +216,19 @@
 .page3 .p3-dress__fmt { font-family: var(--p3-serif); font-size: clamp(16px, 4.4vw, 19px); color: var(--p3-ink); margin: 0 0 1.2rem; }
 .page3 .p3-dress__icons { display: flex; justify-content: center; gap: 1.4rem; }
 .page3 .p3-dress__ic { width: 54px; height: 54px; color: var(--p3-navy); }
+.page3 .p3-dress__palette-lbl { font-family: var(--p3-display); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--p3-navy); font-size: clamp(11px, 3vw, 13px); margin: 2rem 0 1rem; }
+.page3 .p3-dress__palette { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 1.4rem; max-width: 340px; margin: 0 auto; }
+.page3 .p3-swatch { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; width: 4.2em; }
+.page3 .p3-swatch__dot { width: 38px; height: 38px; border-radius: 50%; box-shadow: 0 3px 10px rgba(30,67,116,0.18); border: 2px solid #fff; }
+.page3 .p3-swatch__name { font-family: var(--p3-serif); font-size: clamp(10px, 2.8vw, 12px); color: #5a5a5a; letter-spacing: 0.02em; }
+.page3 .p3-dress__note { font-family: var(--p3-serif); font-style: italic; font-size: clamp(13px, 3.4vw, 15px); color: #5a5a5a; max-width: 24em; margin: 1.8rem auto 0; }
+.page3 .p3-dress__note strong { color: var(--p3-navy-d); font-style: normal; }
+
+/* ======================================================= Playlist */
+.page3 .p3-playlist { text-align: center; padding: 2.4rem 1.6rem 3rem; }
+.page3 .p3-playlist__note { font-family: var(--p3-serif); font-style: italic; color: #5a5a5a; font-size: clamp(14px, 3.8vw, 16px); margin: 0.2rem 0 1.4rem; }
+.page3 .p3-playlist__wrap { max-width: 400px; margin: 0 auto; border-radius: 12px; overflow: hidden; box-shadow: 0 14px 40px rgba(30,60,110,0.16); }
+.page3 .p3-playlist__wrap iframe { display: block; border: 0; }
 
 /* ======================================================= Regalos */
 .page3 .p3-gifts { text-align: center; padding: 2.4rem 2rem 3rem; }

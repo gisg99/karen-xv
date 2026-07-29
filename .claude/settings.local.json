@@ -29,7 +29,10 @@
       "Bash(xargs -r kill)",
       "Bash(pkill -f \"vite\")",
       "Bash(curl -s \"https://itunes.apple.com/search?term=coldplay+a+sky+full+of+stars&entity=song&limit=8\")",
-      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")"
+      "Bash(powershell -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(sed -n '/export default function Classic/,/^}/p' src/pages/Classic.jsx)",
+      "Bash(sed -n '/export default function Page3/,/^}/p' src/pages/Page3.jsx)",
+      "Bash(grep -nA2 \"^\\\\.hero\\\\b\\\\|^\\\\.countdown\\\\b\\\\|^\\\\.events\\\\b\\\\|^\\\\.maps\\\\b\\\\|^\\\\.dresscode\\\\b\\\\|^\\\\.spotify\\\\b\\\\|^\\\\.gifts\\\\b\\\\|^\\\\.rsvp\\\\b\" src/App.css)"
     ]
   }
 }
