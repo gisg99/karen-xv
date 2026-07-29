@@ -71,6 +71,10 @@ function Hero() {
         ))}
       </div>
       <div className="hero__content">
+        <div className="hero__portrait">
+          <img className="hero__portrait-img" src="/karen-portrait.webp" alt="Karen Elizabeth" />
+          <span className="hero__portrait-glass" aria-hidden="true" />
+        </div>
         <p className="hero__eyebrow">Mis Quince · 2026</p>
         <h1 className="hero__name">Karen Elizabeth</h1>
         <p className="hero__xv">— XV Años —</p>
@@ -221,7 +225,7 @@ const SWATCHES = [
 ]
 
 const DRESS_ITEMS = [
-  { icon: '👗', type: 'Damas',      desc: 'Vestido de noche o coctel. Por favor evitar el color rosa palo y blanco, reservados para la festejada.' },
+  { icon: '👗', type: 'Damas',      desc: 'Vestido de noche o coctel. Por favor evitar el color azul marino, reservados para la festejada.' },
   { icon: '🤵', type: 'Caballeros', desc: 'Traje formal oscuro o smoking. Corbata o moño en tonos que complementen la paleta del evento.' },
   { icon: '🌸', type: 'Niños',      desc: 'Ropa de vestir acorde a su edad. Niñas en vestido; niños en pantalón de vestir y camisa.' },
 ]
@@ -255,7 +259,7 @@ function DressCode() {
         </div>
         <p className="dresscode__note">
           Se solicita amablemente no utilizar{' '}
-          <strong>rosa palo, blanco ni plateado</strong>,<br />
+          <strong>azul marino ni azules claros</strong>,<br />
           reservados para la quinceañera y su corte de honor.
         </p>
       </div>
