@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Vercel
+.vercel
+.env
+.env.*
+!.env.example
+
 # PNG originales de las flores (pesados) — en public se usan los .webp optimizados
 flores-originales/
 

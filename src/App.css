@@ -781,3 +781,62 @@ section { padding: 5rem 1.5rem; }
 
   .gifts__bank { text-align: center; }
 }
+
+/* ── RSVP · confirmación en BD ───────────────────────────── */
+.rsvp__familia {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.35rem, 5vw, 1.85rem);
+  color: var(--dark);
+  margin: 0 0 .35rem;
+  line-height: 1.25;
+}
+.rsvp__boletos {
+  font-size: .92rem;
+  color: var(--text);
+  opacity: .8;
+  margin: 0 0 1.9rem;
+}
+.rsvp__boletos strong { color: var(--gold); opacity: 1; }
+
+.rsvp__choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .8rem;
+}
+
+.rsvp__choice {
+  flex: 0 1 auto;
+  min-width: 150px;
+  padding: .95rem 1.8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: transform .2s, background .2s, box-shadow .2s, color .2s;
+}
+.rsvp__choice:disabled { opacity: .6; cursor: default; transform: none; }
+.rsvp__choice:hover:not(:disabled) { transform: translateY(-2px); }
+
+.rsvp__choice--yes { background: var(--gold); border: 1px solid var(--gold); color: #fff; }
+.rsvp__choice--yes:hover:not(:disabled) { background: #3d7fc0; box-shadow: 0 14px 32px rgba(74,143,212,.34); }
+
+.rsvp__choice--no { background: transparent; border: 1px solid rgba(15,38,71,.28); color: var(--text); }
+.rsvp__choice--no:hover:not(:disabled) { background: rgba(15,38,71,.05); }
+
+/* Estado seleccionado: se marca la respuesta guardada sin ocultar la otra opción */
+.rsvp__choice--yes.rsvp__choice--on { background: #2f8f5f; border-color: #2f8f5f; box-shadow: 0 0 0 3px rgba(47,143,95,.2); }
+.rsvp__choice--no.rsvp__choice--on { background: rgba(180,70,55,.09); border-color: #b44637; color: #b44637; box-shadow: 0 0 0 3px rgba(180,70,55,.14); }
+
+.rsvp__status { margin: 1.7rem 0 0; font-size: .92rem; color: var(--text); }
+.rsvp__status--ok { color: #2f8f5f; font-weight: 500; }
+.rsvp__hint { margin: .5rem 0 0; font-size: .78rem; color: var(--text); opacity: .55; font-style: italic; }
+.rsvp__error { margin: 1rem 0 0; font-size: .85rem; color: #b44637; }
+
+@media (max-width: 560px) {
+  .rsvp__choices { flex-direction: column; }
+  .rsvp__choice { width: 100%; min-width: 0; }
+}

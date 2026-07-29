@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import './Page3.css'
 import OptionSwitcher from '../components/OptionSwitcher'
 import { SONG, useAudioPlayer } from '../audio'
+import { useGuest } from '../lib/useGuest'
 
 /* ---------------------------------------------------------------- Datos */
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
@@ -354,14 +355,82 @@ function Gifts() {
 
 function Rsvp() {
   const ref = useFadeIn()
+  const { guest, status, responder } = useGuest()
+  const [saving, setSaving] = useState(null)
+  const [saveError, setSaveError] = useState(null)
+
+  const enviar = async (asistira) => {
+    setSaving(asistira)
+    setSaveError(null)
+    try {
+      await responder(asistira)
+    } catch (e) {
+      setSaveError(e.message)
+    } finally {
+      setSaving(null)
+    }
+  }
+
+  // Sin enlace personalizado (o si falla la consulta) se mantiene el WhatsApp
   const wa = `https://wa.me/${RSVP_WHATSAPP}?text=${encodeURIComponent('¡Hola! Confirmo mi asistencia a los XV años de Karen Elizabeth.')}`
+
   return (
     <section className="p3-rsvp">
       <div ref={ref} className="fade-in">
         <Icon name="whatsapp" className="p3-rsvp__ic" />
         <h2 className="p3-heading">Confirmar Asistencia</h2>
         <p className="p3-rsvp__note">Te pedimos confirmar antes del 22 de agosto de 2026</p>
-        <a className="p3-btn" href={wa} target="_blank" rel="noopener noreferrer">Confirmar aquí</a>
+
+        {status === 'loading' && <p className="p3-rsvp__loading">Cargando tu invitación…</p>}
+
+        {status === 'ready' && guest && (
+          <>
+            <div className="p3-rsvp__card">
+              <p className="p3-rsvp__familia">{guest.familia}</p>
+              <p className="p3-rsvp__boletos">
+                Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
+              </p>
+            </div>
+
+            <div className="p3-rsvp__choices">
+              <button
+                type="button"
+                className={`p3-btn p3-rsvp__choice${guest.asistira === true ? ' p3-rsvp__choice--on' : ''}`}
+                onClick={() => enviar(true)}
+                disabled={saving !== null}
+              >
+                {saving === true ? 'Guardando…' : 'Asistiré'}
+              </button>
+              <button
+                type="button"
+                className={`p3-btn p3-btn--ghost p3-rsvp__choice${guest.asistira === false ? ' p3-rsvp__choice--off' : ''}`}
+                onClick={() => enviar(false)}
+                disabled={saving !== null}
+              >
+                {saving === false ? 'Guardando…' : 'No asistiré'}
+              </button>
+            </div>
+
+            {guest.asistira === true && (
+              <p className="p3-rsvp__status p3-rsvp__status--ok">
+                ¡Gracias por confirmar! Te esperamos con mucho gusto ♡
+              </p>
+            )}
+            {guest.asistira === false && (
+              <p className="p3-rsvp__status">
+                Gracias por avisarnos. Te vamos a extrañar.
+              </p>
+            )}
+            {guest.asistira !== null && (
+              <p className="p3-rsvp__hint">Puedes cambiar tu respuesta cuando quieras.</p>
+            )}
+            {saveError && <p className="p3-rsvp__error">{saveError}</p>}
+          </>
+        )}
+
+        {(status === 'anonymous' || status === 'error') && (
+          <a className="p3-btn" href={wa} target="_blank" rel="noopener noreferrer">Confirmar aquí</a>
+        )}
       </div>
     </section>
   )

@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import '../App.css'
 import OptionSwitcher from '../components/OptionSwitcher'
 import { SONG, useAudioPlayer } from '../audio'
+import { useGuest } from '../lib/useGuest'
 
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
 const PLAYLIST_INVITE = 'https://open.spotify.com/playlist/5j0IZEXjaocvi9L0r9imxb?si=WVkdC6K_TdavUgDXtHwyLA&utm_source=copy-link&pt=54eccddb35e655639329c43d4c540c57&pi=31CjinzkQZaEg'
@@ -382,22 +383,88 @@ const RSVP_WHATSAPP = '5218100000000' // ← reemplazar por el número real de c
 
 function RSVP() {
   const ref = useFadeIn()
+  const { guest, status, responder } = useGuest()
+  const [saving, setSaving] = useState(null)
+  const [saveError, setSaveError] = useState(null)
+
+  const enviar = async (asistira) => {
+    setSaving(asistira)
+    setSaveError(null)
+    try {
+      await responder(asistira)
+    } catch (e) {
+      setSaveError(e.message)
+    } finally {
+      setSaving(null)
+    }
+  }
+
+  // Sin enlace personalizado (o si falla la consulta) se mantiene el WhatsApp
   const wa = `https://wa.me/${RSVP_WHATSAPP}?text=${encodeURIComponent('¡Hola! Confirmo mi asistencia a los XV años de Karen Elizabeth.')}`
+
   return (
     <section className="rsvp" id="confirmacion">
       <p className="label">Confirmación de Asistencia</p>
       <h2 className="title">¿Nos acompañas?</h2>
       <p className="subtitle">Confirma tu asistencia antes del 22 de agosto de 2026</p>
       <div className="ornament" aria-hidden="true"><span>✦</span></div>
+
       <div className="rsvp__box fade-in" ref={ref}>
-        <p className="rsvp__cta-text">Da clic en el botón y confírmame por WhatsApp</p>
-        <a className="rsvp__wa" href={wa} target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20Z" />
-            <path fill="currentColor" d="M9.2 8.6c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3 0 .6.4.7 1.2 1.5 2 1.9.3.1.4.1.6-.1l.5-.6c.2-.2.3-.2.6-.1l1.5.7c.3.1.4.3.4.5 0 .8-.6 1.5-1.4 1.6-.7.1-1.5.2-3.6-.9-2-1-3.3-3.1-3.4-3.3-.1-.2-.8-1.1-.8-2.1 0-1 .5-1.5.7-1.7Z" />
-          </svg>
-          Confirmar por WhatsApp
-        </a>
+        {status === 'loading' && <p className="rsvp__cta-text">Cargando tu invitación…</p>}
+
+        {status === 'ready' && guest && (
+          <>
+            <p className="rsvp__familia">{guest.familia}</p>
+            <p className="rsvp__boletos">
+              Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
+            </p>
+
+            <div className="rsvp__choices">
+              <button
+                type="button"
+                className={`rsvp__choice rsvp__choice--yes${guest.asistira === true ? ' rsvp__choice--on' : ''}`}
+                onClick={() => enviar(true)}
+                disabled={saving !== null}
+              >
+                {saving === true ? 'Guardando…' : 'Asistiré'}
+              </button>
+              <button
+                type="button"
+                className={`rsvp__choice rsvp__choice--no${guest.asistira === false ? ' rsvp__choice--on' : ''}`}
+                onClick={() => enviar(false)}
+                disabled={saving !== null}
+              >
+                {saving === false ? 'Guardando…' : 'No asistiré'}
+              </button>
+            </div>
+
+            {guest.asistira === true && (
+              <p className="rsvp__status rsvp__status--ok">
+                ¡Gracias por confirmar! Te esperamos con mucho gusto ♡
+              </p>
+            )}
+            {guest.asistira === false && (
+              <p className="rsvp__status">Gracias por avisarnos. Te vamos a extrañar.</p>
+            )}
+            {guest.asistira !== null && (
+              <p className="rsvp__hint">Puedes cambiar tu respuesta cuando quieras.</p>
+            )}
+            {saveError && <p className="rsvp__error">{saveError}</p>}
+          </>
+        )}
+
+        {(status === 'anonymous' || status === 'error') && (
+          <>
+            <p className="rsvp__cta-text">Da clic en el botón y confírmame por WhatsApp</p>
+            <a className="rsvp__wa" href={wa} target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20Z" />
+                <path fill="currentColor" d="M9.2 8.6c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3 0 .6.4.7 1.2 1.5 2 1.9.3.1.4.1.6-.1l.5-.6c.2-.2.3-.2.6-.1l1.5.7c.3.1.4.3.4.5 0 .8-.6 1.5-1.4 1.6-.7.1-1.5.2-3.6-.9-2-1-3.3-3.1-3.4-3.3-.1-.2-.8-1.1-.8-2.1 0-1 .5-1.5.7-1.7Z" />
+              </svg>
+              Confirmar por WhatsApp
+            </a>
+          </>
+        )}
       </div>
     </section>
   )

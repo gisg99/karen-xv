@@ -6,14 +6,15 @@ const OPTIONS = [
 ]
 
 export default function OptionSwitcher() {
-  const { pathname } = useLocation()
+  // `search` se arrastra al cambiar de diseño para no perder el ?id= del invitado
+  const { pathname, search } = useLocation()
   return (
     <div className="opt-switcher" aria-label="Cambiar diseño">
       <span className="opt-switcher__label">Diseño</span>
       {OPTIONS.map(({ to, label }) => (
         <Link
           key={to}
-          to={to}
+          to={{ pathname: to, search }}
           className={`opt-btn${pathname === to ? ' opt-btn--active' : ''}`}
         >
           {label}

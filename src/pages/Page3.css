@@ -257,3 +257,41 @@
 @media (prefers-reduced-motion: reduce) {
   .page3 .fade-in { opacity: 1; transform: none; transition: none; }
 }
+
+/* ============================================= RSVP · confirmación en BD */
+.page3 .p3-rsvp__loading { font-family: var(--p3-serif); font-style: italic; color: #666; font-size: clamp(14px, 3.8vw, 16px); }
+
+.page3 .p3-rsvp__card {
+  background: var(--p3-cream2);
+  border: 1px solid rgba(30,67,116,0.16);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  max-width: 320px;
+  margin: 0 auto 1.4rem;
+}
+.page3 .p3-rsvp__familia { font-family: var(--p3-display); font-size: clamp(19px, 5.4vw, 24px); color: var(--p3-navy-d); margin: 0 0 .3rem; line-height: 1.25; }
+.page3 .p3-rsvp__boletos { font-family: var(--p3-serif); font-size: clamp(14px, 3.8vw, 16px); color: #555; margin: 0; }
+.page3 .p3-rsvp__boletos strong { color: var(--p3-navy); }
+
+.page3 .p3-rsvp__choices { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; }
+.page3 .p3-rsvp__choice { min-width: 132px; }
+
+/* Estado seleccionado: se marca la respuesta guardada sin ocultar la otra opción */
+.page3 .p3-rsvp__choice--on {
+  background: #2f6d4a;
+  box-shadow: 0 0 0 2px rgba(47,109,74,0.25);
+}
+.page3 .p3-rsvp__choice--on:hover { background: #285d3f; }
+
+.page3 .p3-rsvp__choice--off {
+  background: rgba(154,74,60,0.1);
+  border-color: #9a4a3c;
+  color: #9a4a3c;
+  box-shadow: 0 0 0 2px rgba(154,74,60,0.18);
+}
+.page3 .p3-rsvp__choice--off:hover { background: rgba(154,74,60,0.18); }
+
+.page3 .p3-rsvp__status { font-family: var(--p3-serif); font-size: clamp(14px, 3.8vw, 16px); color: #555; margin: 1.2rem auto 0; max-width: 22em; }
+.page3 .p3-rsvp__status--ok { color: #2f6d4a; }
+.page3 .p3-rsvp__hint { font-family: var(--p3-serif); font-style: italic; font-size: clamp(12px, 3.2vw, 13px); color: #888; margin: .4rem 0 0; }
+.page3 .p3-rsvp__error { font-family: var(--p3-serif); font-size: clamp(13px, 3.4vw, 14px); color: #9a4a3c; margin: .8rem 0 0; }
