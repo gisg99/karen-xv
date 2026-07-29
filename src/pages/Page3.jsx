@@ -7,6 +7,7 @@ import { SONG, useAudioPlayer } from '../audio'
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
 
 const RSVP_WHATSAPP = '5218100000000' // ← reemplazar por el número real de confirmación
+const PLAYLIST_INVITE = 'https://open.spotify.com/playlist/5j0IZEXjaocvi9L0r9imxb?si=WVkdC6K_TdavUgDXtHwyLA&utm_source=copy-link&pt=54eccddb35e655639329c43d4c540c57&pi=31CjinzkQZaEg'
 
 const MISA = {
   place: 'Parroquia Madre Admirable',
@@ -311,6 +312,13 @@ function Playlist() {
             loading="lazy"
           />
         </div>
+        <p className="p3-playlist__invite">
+          ¿Tienes una canción que no puede faltar? ¡Agrégala a la playlist
+          y que suene en mi fiesta!
+        </p>
+        <a className="p3-btn p3-btn--spotify" href={PLAYLIST_INVITE} target="_blank" rel="noopener noreferrer">
+          Agregar canciones en Spotify
+        </a>
       </div>
     </section>
     

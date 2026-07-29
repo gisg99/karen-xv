@@ -4,6 +4,7 @@ import OptionSwitcher from '../components/OptionSwitcher'
 import { SONG, useAudioPlayer } from '../audio'
 
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
+const PLAYLIST_INVITE = 'https://open.spotify.com/playlist/5j0IZEXjaocvi9L0r9imxb?si=WVkdC6K_TdavUgDXtHwyLA&utm_source=copy-link&pt=54eccddb35e655639329c43d4c540c57&pi=31CjinzkQZaEg'
 
 function useFadeIn() {
   const ref = useRef(null)
@@ -334,6 +335,12 @@ function Spotify() {
           loading="lazy"
         />
       </div>
+      <p className="spotify__invite">
+        ¿Tienes una canción que no puede faltar? ¡Agrégala a la playlist y que suene en la fiesta!
+      </p>
+      <a className="btn btn--spotify" href={PLAYLIST_INVITE} target="_blank" rel="noopener noreferrer">
+        Agregar canciones en Spotify
+      </a>
     </section>
   )
 }
