@@ -1,4 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
+import WebSocketImpl from 'ws'
+
+// supabase-js (vía realtime-js) espera un WebSocket global. Node solo lo trae
+// de forma nativa desde la v22; en versiones anteriores el cliente truena con
+// "native WebSocket not found" aunque solo hagamos peticiones REST. Este API no
+// usa realtime, pero basta con darle una implementación para que arranque.
+// En Node 22+ el global ya existe y esto no hace nada.
+if (!globalThis.WebSocket) globalThis.WebSocket = WebSocketImpl
 
 export const TABLE = 'invitados'
 
