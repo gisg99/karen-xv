@@ -4,7 +4,7 @@ import { SONG, useAudioPlayer } from '../audio'
 import { useGuest } from '../lib/useGuest'
 
 /* ---------------------------------------------------------------- Datos */
-const EVENT_DATE = new Date('2026-08-29T17:00:00')
+const EVENT_DATE = new Date('2026-08-29T19:00:00')
 
 const RSVP_WHATSAPP = '523346863267' // WhatsApp de confirmación
 
