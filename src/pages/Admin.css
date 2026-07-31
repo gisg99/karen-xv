@@ -188,6 +188,21 @@
 
 .adm-btn--xs { font-size: 0.76rem; padding: 0.35rem 0.6rem; border-radius: 6px; }
 
+/* Botón de acción solo-ícono (tabla) */
+.adm-btn--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 7px;
+  color: var(--a-text);
+}
+.adm-btn--icon svg { display: block; }
+.adm-btn--ok { color: #7ddcab; border-color: rgba(63, 174, 122, 0.4); }
+.adm-btn--ok:hover:not(:disabled) { background: rgba(63, 174, 122, 0.12); }
+
 .adm-btn--danger { color: #f0a292; border-color: #4a2c26; }
 .adm-btn--danger:hover:not(:disabled) { background: #3a201b; }
 
@@ -264,7 +279,6 @@
 .adm-table tbody tr:last-child td { border-bottom: none; }
 
 .adm-num { text-align: right; font-variant-numeric: tabular-nums; }
-.adm-num__conf { color: #2f6d4a; font-size: 12px; white-space: nowrap; }
 .adm-acts { text-align: right; white-space: nowrap; }
 .adm-acts .adm-btn + .adm-btn { margin-left: 0.35rem; }
 
@@ -292,8 +306,9 @@
 }
 
 .adm-badge--confirmado { color: #7ddcab; background: rgba(63, 174, 122, 0.14); border-color: rgba(63, 174, 122, 0.35); }
-.adm-badge--rechazado  { color: #f0a292; background: rgba(212, 97, 74, 0.14);  border-color: rgba(212, 97, 74, 0.35); }
-.adm-badge--pendiente  { color: #e4c684; background: rgba(212, 165, 74, 0.13); border-color: rgba(212, 165, 74, 0.32); }
+.adm-badge--parcial    { color: #f0a95e; background: rgba(224, 138, 46, 0.15); border-color: rgba(224, 138, 46, 0.38); }
+.adm-badge--rechazado  { color: #9aa7bd; background: rgba(120, 132, 156, 0.12); border-color: rgba(120, 132, 156, 0.3); }
+.adm-badge--pendiente  { color: #f28b7d; background: rgba(224, 74, 58, 0.15);  border-color: rgba(224, 74, 58, 0.4); }
 
 /* --------------------------------------------------------------- Varios */
 .adm-empty { margin: 1.4rem 0; text-align: center; font-size: 0.88rem; color: var(--a-dim); }
