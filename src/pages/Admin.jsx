@@ -38,6 +38,7 @@ const AdmIcon = ({ name }) => {
     open: <><path {...p} d="M15 3h6v6" /><path {...p} d="M10 14 21 3" /><path {...p} d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></>,
     trash: <><path {...p} d="M3 6h18" /><path {...p} d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path {...p} d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path {...p} d="M10 11v6M14 11v6" /></>,
     check: <path {...p} d="M20 6 9 17l-5-5" />,
+    whatsapp: <><path {...p} d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20Z" /><path d="M9.2 8.6c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3 0 .6.4.7 1.2 1.5 2 1.9.3.1.4.1.6-.1l.5-.6c.2-.2.3-.2.6-.1l1.5.7c.3.1.4.3.4.5 0 .8-.6 1.5-1.4 1.6-.7.1-1.5.2-3.6-.9-2-1-3.3-3.1-3.4-3.3-.1-.2-.8-1.1-.8-2.1 0-1 .5-1.5.7-1.7Z" fill="currentColor" stroke="none" /></>,
   }
   return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">{paths[name]}</svg>
 }
@@ -220,6 +221,13 @@ function Panel({ onLogout }) {
 
   const enlaceDe = (id) => `${window.location.origin}${diseno}?id=${id}`
 
+  // Abre WhatsApp con el mensaje y el enlace personalizado ya listos; sin número
+  // fijo para que quien manda elija el contacto correcto del invitado.
+  const whatsappDe = (inv) => {
+    const texto = `¡Hola! Te comparto la invitación a los XV años de Karen Elizabeth. Aquí puedes ver los detalles y confirmar tu asistencia: ${enlaceDe(inv.id)}`
+    return `https://wa.me/?text=${encodeURIComponent(texto)}`
+  }
+
   const copiar = async (id) => {
     const url = enlaceDe(id)
     try {
@@ -318,6 +326,7 @@ function Panel({ onLogout }) {
             <table className="adm-table">
               <thead>
                 <tr>
+                  <th className="adm-wa-col"><span className="adm-sr">Enviar por WhatsApp</span></th>
                   <th>Nombre (interno)</th>
                   <th>Familia (invitación)</th>
                   <th className="adm-num">Boletos</th>
@@ -331,6 +340,18 @@ function Panel({ onLogout }) {
                   const asistencia = asistenciaBadge(inv)
                   return (
                     <tr key={inv.id}>
+                      <td className="adm-wa-col">
+                        <a
+                          className="adm-btn adm-btn--icon adm-btn--wa"
+                          href={whatsappDe(inv)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Enviar invitación por WhatsApp"
+                          aria-label={`Enviar invitación de ${inv.nombre} por WhatsApp`}
+                        >
+                          <AdmIcon name="whatsapp" />
+                        </a>
+                      </td>
                       <td>{inv.nombre}</td>
                       <td>{inv.familia}</td>
                       <td className="adm-num">{inv.boletos}</td>
