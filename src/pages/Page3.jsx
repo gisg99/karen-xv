@@ -322,8 +322,31 @@ function DressCode() {
 
 function Rsvp() {
   const ref = useFadeIn()
-  const { guest, status } = useGuest()
+  const { guest, status, responder } = useGuest()
+  const [saving, setSaving] = useState(null)
+  const [saveError, setSaveError] = useState(null)
+  // `elegidos` es null hasta que el invitado toca el selector; mientras tanto se
+  // muestra su respuesta previa o, si aún no responde, todos sus boletos.
+  const [elegidos, setElegidos] = useState(null)
 
+  const max = guest?.boletos ?? 1
+  const cuantos = elegidos ?? guest?.boletos_confirmados ?? guest?.boletos ?? 1
+
+  const ajustar = (delta) => setElegidos(Math.min(max, Math.max(1, cuantos + delta)))
+
+  const enviar = async (asistira) => {
+    setSaving(asistira)
+    setSaveError(null)
+    try {
+      await responder(asistira, asistira ? cuantos : undefined)
+    } catch (e) {
+      setSaveError(e.message)
+    } finally {
+      setSaving(null)
+    }
+  }
+
+  // Sin enlace personalizado (o si falla la consulta) se mantiene el WhatsApp.
   const mensaje = guest?.familia
     ? `¡Hola! Familia ${guest.familia}. Confirmamos nuestra asistencia a los XV años de Karen Elizabeth.`
     : '¡Hola! Confirmo mi asistencia a los XV años de Karen Elizabeth.'
@@ -339,18 +362,90 @@ function Rsvp() {
         {status === 'loading' && <p className="p3-rsvp__loading">Cargando tu invitación…</p>}
 
         {status === 'ready' && guest && (
-          <div className="p3-rsvp__card">
-            <p className="p3-rsvp__familia">{guest.familia}</p>
-            <p className="p3-rsvp__boletos">
-              Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
-            </p>
-          </div>
+          <>
+            <div className="p3-rsvp__card">
+              <p className="p3-rsvp__familia">{guest.familia}</p>
+              <p className="p3-rsvp__boletos">
+                Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
+              </p>
+            </div>
+
+            {guest.boletos > 1 && (
+              <div className="p3-rsvp__count">
+                <span className="p3-rsvp__count-lbl">¿Cuántos asistirán?</span>
+                <div className="p3-rsvp__stepper">
+                  <button
+                    type="button"
+                    className="p3-rsvp__step"
+                    onClick={() => ajustar(-1)}
+                    disabled={cuantos <= 1 || saving !== null}
+                    aria-label="Un boleto menos"
+                  >−</button>
+                  <span className="p3-rsvp__count-num" aria-live="polite">{cuantos}</span>
+                  <button
+                    type="button"
+                    className="p3-rsvp__step"
+                    onClick={() => ajustar(1)}
+                    disabled={cuantos >= max || saving !== null}
+                    aria-label="Un boleto más"
+                  >+</button>
+                </div>
+                <span className="p3-rsvp__count-of">de {guest.boletos}</span>
+              </div>
+            )}
+
+            <div className="p3-rsvp__choices">
+              <button
+                type="button"
+                className={`p3-btn p3-rsvp__choice${guest.asistira === true ? ' p3-rsvp__choice--on' : ''}`}
+                onClick={() => enviar(true)}
+                disabled={saving !== null}
+              >
+                {saving === true
+                  ? 'Guardando…'
+                  : guest.boletos > 1
+                    ? `Asistiré con ${cuantos} ${cuantos === 1 ? 'boleto' : 'boletos'}`
+                    : 'Asistiré'}
+              </button>
+              <button
+                type="button"
+                className={`p3-btn p3-btn--ghost p3-rsvp__choice${guest.asistira === false ? ' p3-rsvp__choice--off' : ''}`}
+                onClick={() => enviar(false)}
+                disabled={saving !== null}
+              >
+                {saving === false ? 'Guardando…' : 'No asistiré'}
+              </button>
+            </div>
+
+            {guest.asistira === true && (
+              <p className="p3-rsvp__status p3-rsvp__status--ok">
+                ¡Gracias por confirmar
+                {guest.boletos_confirmados
+                  ? ` ${guest.boletos_confirmados} ${guest.boletos_confirmados === 1 ? 'boleto' : 'boletos'}`
+                  : ''}
+                ! Te esperamos con mucho gusto ♡
+              </p>
+            )}
+            {guest.asistira === false && (
+              <p className="p3-rsvp__status">
+                Gracias por avisarnos. Te vamos a extrañar.
+              </p>
+            )}
+            {guest.asistira !== null && (
+              <p className="p3-rsvp__hint">Puedes cambiar tu respuesta cuando quieras.</p>
+            )}
+            {saveError && <p className="p3-rsvp__error">{saveError}</p>}
+          </>
         )}
 
-        <p className="p3-rsvp__wa-hint">Confírmanos por WhatsApp dando clic en el botón:</p>
-        <a className="p3-btn p3-btn--wa" href={wa} target="_blank" rel="noopener noreferrer">
-          Confirmar por WhatsApp
-        </a>
+        {(status === 'anonymous' || status === 'error') && (
+          <>
+            <p className="p3-rsvp__wa-hint">Confírmanos por WhatsApp dando clic en el botón:</p>
+            <a className="p3-btn p3-btn--wa" href={wa} target="_blank" rel="noopener noreferrer">
+              Confirmar por WhatsApp
+            </a>
+          </>
+        )}
       </div>
     </section>
   )

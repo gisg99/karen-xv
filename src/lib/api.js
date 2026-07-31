@@ -26,5 +26,5 @@ export const api = {
 
   // Público
   invitacion:     (id)      => request(`/invitacion/${encodeURIComponent(id)}`),
-  rsvp:           (id, asistira) => request('/rsvp', { method: 'POST', body: JSON.stringify({ id, asistira }) }),
+  rsvp:           (id, asistira, boletos) => request('/rsvp', { method: 'POST', body: JSON.stringify({ id, asistira, boletos }) }),
 }

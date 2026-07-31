@@ -184,7 +184,9 @@ function Panel({ onLogout }) {
     for (const inv of lista) {
       base.boletos += inv.boletos
       base[estadoDe(inv)] += 1
-      if (inv.asistira === true) base.boletosConfirmados += inv.boletos
+      // Usa los boletos que el invitado confirmó; para respuestas viejas sin
+      // ese dato, cae en los que tiene asignados.
+      if (inv.asistira === true) base.boletosConfirmados += inv.boletos_confirmados ?? inv.boletos
     }
     return base
   }, [lista])
@@ -310,7 +312,12 @@ function Panel({ onLogout }) {
                       <td><code className="adm-id">{inv.id}</code></td>
                       <td>{inv.nombre}</td>
                       <td>{inv.familia}</td>
-                      <td className="adm-num">{inv.boletos}</td>
+                      <td className="adm-num">
+                        {inv.boletos}
+                        {inv.asistira === true && inv.boletos_confirmados != null && inv.boletos_confirmados !== inv.boletos && (
+                          <span className="adm-num__conf"> · usa {inv.boletos_confirmados}</span>
+                        )}
+                      </td>
                       <td><span className={`adm-badge adm-badge--${estado}`}>{ETIQUETA[estado]}</span></td>
                       <td className="adm-acts">
                         <button className="adm-btn adm-btn--xs" onClick={() => copiar(inv.id)}>

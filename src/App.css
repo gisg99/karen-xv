@@ -798,6 +798,53 @@ section { padding: 5rem 1.5rem; }
 }
 .rsvp__boletos strong { color: var(--gold); opacity: 1; }
 
+/* Selector de cuántos boletos usará el invitado (solo si tiene más de uno) */
+.rsvp__count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem .8rem;
+  margin: -.8rem 0 1.6rem;
+}
+.rsvp__count-lbl {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+.rsvp__stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(15,38,71,.28);
+  border-radius: 2px;
+}
+.rsvp__step {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s;
+}
+.rsvp__step:hover:not(:disabled) { background: rgba(15,38,71,.05); }
+.rsvp__step:disabled { opacity: .35; cursor: default; }
+.rsvp__count-num {
+  min-width: 2ch;
+  text-align: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.4rem;
+  color: var(--dark);
+  font-variant-numeric: tabular-nums;
+}
+.rsvp__count-of {
+  font-size: .85rem;
+  color: var(--text);
+  opacity: .7;
+}
+
 .rsvp__choices {
   display: flex;
   flex-wrap: wrap;

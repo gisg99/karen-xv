@@ -279,6 +279,55 @@
 .page3 .p3-rsvp__boletos { font-family: var(--p3-serif); font-size: clamp(14px, 3.8vw, 16px); color: #555; margin: 0; }
 .page3 .p3-rsvp__boletos strong { color: var(--p3-navy); }
 
+/* Selector de cuántos boletos usará el invitado (solo si tiene más de uno) */
+.page3 .p3-rsvp__count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem .7rem;
+  margin: 0 auto 1.1rem;
+}
+.page3 .p3-rsvp__count-lbl {
+  font-family: var(--p3-serif);
+  font-size: clamp(14px, 3.8vw, 16px);
+  color: #555;
+}
+.page3 .p3-rsvp__stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(30,67,116,0.24);
+  border-radius: 999px;
+  background: var(--p3-cream2);
+  overflow: hidden;
+}
+.page3 .p3-rsvp__step {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  color: var(--p3-navy);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.page3 .p3-rsvp__step:hover:not(:disabled) { background: rgba(30,67,116,0.1); }
+.page3 .p3-rsvp__step:disabled { opacity: .35; cursor: not-allowed; }
+.page3 .p3-rsvp__count-num {
+  min-width: 2ch;
+  text-align: center;
+  font-family: var(--p3-display);
+  font-size: clamp(18px, 5vw, 22px);
+  color: var(--p3-navy-d);
+  font-variant-numeric: tabular-nums;
+}
+.page3 .p3-rsvp__count-of {
+  font-family: var(--p3-serif);
+  font-size: clamp(13px, 3.4vw, 14px);
+  color: #888;
+}
+
 .page3 .p3-rsvp__choices { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; }
 .page3 .p3-rsvp__choice { min-width: 132px; }
 
