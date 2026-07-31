@@ -33,7 +33,8 @@
       "Bash(sed -n '/export default function Classic/,/^}/p' src/pages/Classic.jsx)",
       "Bash(sed -n '/export default function Page3/,/^}/p' src/pages/Page3.jsx)",
       "Bash(grep -nA2 \"^\\\\.hero\\\\b\\\\|^\\\\.countdown\\\\b\\\\|^\\\\.events\\\\b\\\\|^\\\\.maps\\\\b\\\\|^\\\\.dresscode\\\\b\\\\|^\\\\.spotify\\\\b\\\\|^\\\\.gifts\\\\b\\\\|^\\\\.rsvp\\\\b\" src/App.css)",
-      "Bash(grep -E \"^[A-Z]:\\\\\\\\\\\\\\\\|^\\\\s+[0-9]+:[0-9]+\")"
+      "Bash(grep -E \"^[A-Z]:\\\\\\\\\\\\\\\\|^\\\\s+[0-9]+:[0-9]+\")",
+      "Bash(npx eslint *)"
     ]
   }
 }

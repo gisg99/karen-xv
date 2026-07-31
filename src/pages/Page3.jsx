@@ -1,45 +1,46 @@
 import { useState, useEffect, useRef } from 'react'
 import './Page3.css'
-import OptionSwitcher from '../components/OptionSwitcher'
 import { SONG, useAudioPlayer } from '../audio'
 import { useGuest } from '../lib/useGuest'
 
 /* ---------------------------------------------------------------- Datos */
 const EVENT_DATE = new Date('2026-08-29T17:00:00')
 
-const RSVP_WHATSAPP = '5218100000000' // ← reemplazar por el número real de confirmación
-const PLAYLIST_INVITE = 'https://open.spotify.com/playlist/5j0IZEXjaocvi9L0r9imxb?si=WVkdC6K_TdavUgDXtHwyLA&utm_source=copy-link&pt=54eccddb35e655639329c43d4c540c57&pi=31CjinzkQZaEg'
+const RSVP_WHATSAPP = '523346863267' // WhatsApp de confirmación
 
 const MISA = {
   place: 'Parroquia Madre Admirable',
   address: 'Manuel Acuña 32, Centro · El Salto, Jalisco',
+  time: '7:00 PM',
   map: 'https://www.google.com/maps/search/Parroquia+Madre+Admirable+Manuel+Acu%C3%B1a+32+Centro+El+Salto+Jalisco',
+  embed: 'https://www.google.com/maps?q=Parroquia+Madre+Admirable+Manuel+Acu%C3%B1a+32+Centro+El+Salto+Jalisco&output=embed',
 }
 const RECEPCION = {
   place: 'Aura Lounge · Salón de eventos',
   address: 'Constitución 501, Potrero Nuevo · El Salto, Jalisco',
+  time: '8:30 PM',
   map: 'https://www.google.com/maps/search/Aura+Lounge+Sal%C3%B3n+de+eventos+Constituci%C3%B3n+501+Potrero+Nuevo+El+Salto+Jalisco',
+  embed: 'https://www.google.com/maps?q=Aura+Lounge+Sal%C3%B3n+de+eventos+Constituci%C3%B3n+501+Potrero+Nuevo+El+Salto+Jalisco&output=embed',
 }
 
 const ITINERARY = [
-  { time: '5:00 PM',  label: 'Misa',            icon: 'church' },
-  { time: '6:30 PM',  label: 'Sesión de fotos', icon: 'camera' },
-  { time: '7:00 PM',  label: 'Recepción',       icon: 'cheers' },
-  { time: '8:00 PM',  label: 'Cena',            icon: 'dinner' },
-  { time: '9:00 PM',  label: 'Vals',            icon: 'dance' },
-  { time: '9:30 PM',  label: 'Brindis',         icon: 'champagne' },
-  { time: '10:00 PM', label: 'Pastel',          icon: 'cake' },
-  { time: '2:00 AM',  label: 'Despedida',       icon: 'fireworks' },
+  { time: '7:00 PM',  label: 'Misa',              icon: 'church' },
+  { time: '8:30 PM',  label: 'Estar en el salón', icon: 'pin' },
+  { time: '9:00 PM',  label: 'Recepción',         icon: 'cheers' },
+  { time: '9:30 PM',  label: 'Cena',              icon: 'dinner' },
+  { time: '10:30 PM', label: 'Vals',              icon: 'dance' },
+  { time: '11:00 PM', label: 'Brindis',           icon: 'champagne' },
+  { time: '2:00 AM',  label: 'Despedida',         icon: 'fireworks' },
 ]
 
 /* Paleta de colores sugerida (misma en ambos diseños) */
 const SWATCHES = [
   { hex: '#C9A96E', name: 'Dorado' },
+  { hex: '#6E1E2C', name: 'Vino Tinto' },
   { hex: '#B76E79', name: 'Rosa Oro' },
-  { hex: '#7D9B76', name: 'Verde Salvia' },
-  { hex: '#8B7BA8', name: 'Lavanda' },
-  { hex: '#4A7C9E', name: 'Azul Acero' },
-  { hex: '#2C1810', name: 'Chocolate' },
+  { hex: '#1F6B4E', name: 'Esmeralda' },
+  { hex: '#6B2D5C', name: 'Ciruela' },
+  { hex: '#1A1A1A', name: 'Negro' },
 ]
 
 /* ------------------------------------------------------- Animación fade */
@@ -219,14 +220,34 @@ function Photo({ src }) {
   )
 }
 
-function PlaceCard({ icon, title, place, address, map }) {
+function PlaceCard({ icon, title, place, address, time, map, embed }) {
   return (
     <div className="p3-place">
       <Icon name={icon} className="p3-place__ic" />
       <h3 className="p3-place__title">{title}</h3>
       <p className="p3-place__name">{place}</p>
       <p className="p3-place__addr">{address}</p>
-      <a className="p3-btn" href={map} target="_blank" rel="noopener noreferrer">Ver ubicación</a>
+      {time && (
+        <p className="p3-place__time">
+          <span className="p3-place__time-tag">Importante</span>
+          <span>{title} · <strong>{time}</strong></span>
+        </p>
+      )}
+      {embed && (
+        <div className="p3-place__map">
+          <iframe
+            title={`Mapa · ${place}`}
+            src={embed}
+            width="100%"
+            height="200"
+            style={{ border: 0 }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
+      )}
+      <a className="p3-btn" href={map} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
     </div>
   )
 }
@@ -252,9 +273,9 @@ function Itinerary() {
       <h2 className="p3-heading">Itinerario de Actividades</h2>
       <Floral src="/flores5.webp" className="p3-band p3-band--sm" />
       <div ref={ref} className="p3-itin__line fade-in">
-        {ITINERARY.map((it, i) => (
-          <div key={it.label} className={`p3-itin__item ${i % 2 ? 'p3-itin__item--r' : 'p3-itin__item--l'}`}>
-            <div className="p3-itin__icon"><Icon name={it.icon} className="p3-itin__ic" /></div>
+        {ITINERARY.map((it) => (
+          <div key={it.label} className="p3-itin__item">
+            <span className="p3-itin__icon"><Icon name={it.icon} className="p3-itin__ic" /></span>
             <div className="p3-itin__txt">
               <span className="p3-itin__time">{it.time}</span>
               <span className="p3-itin__label">{it.label}</span>
@@ -262,6 +283,10 @@ function Itinerary() {
           </div>
         ))}
       </div>
+      <p className="p3-itin__note">
+        <Icon name="pin" className="p3-itin__note-ic" />
+        <span>Te pedimos de la manera más atenta estar <strong>puntual a las 8:30 PM</strong> en el salón. ¡Tu presencia a tiempo hace la diferencia!</span>
+      </p>
     </section>
   )
 }
@@ -288,66 +313,8 @@ function DressCode() {
           ))}
         </div>
         <p className="p3-dress__note">
-          Se solicita amablemente no utilizar <strong>blanco</strong>, reservado para la festejada.
+          El único color reservado es el <strong>azul</strong>, exclusivo para la quinceañera. ¡El resto de la paleta es bienvenida!
         </p>
-      </div>
-    </section>
-  )
-}
-
-function Playlist() {
-  const ref = useFadeIn()
-  return (
-    <section className="p3-playlist">
-      <div ref={ref} className="fade-in">
-        <h2 className="p3-heading">Mi Playlist</h2>
-        <p className="p3-playlist__note">Las canciones que sonarán en mi noche</p>
-        <div className="p3-playlist__wrap">
-          <iframe
-            title="Playlist Karen Elizabeth XV"
-            src="https://open.spotify.com/embed/playlist/5j0IZEXjaocvi9L0r9imxb?utm_source=generator&theme=0"
-            width="100%"
-            height="380"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-          />
-        </div>
-        <p className="p3-playlist__invite">
-          ¿Tienes una canción que no puede faltar? ¡Agrégala a la playlist
-          y que suene en mi fiesta!
-        </p>
-        <a className="p3-btn p3-btn--spotify" href={PLAYLIST_INVITE} target="_blank" rel="noopener noreferrer">
-          Agregar canciones en Spotify
-        </a>
-      </div>
-    </section>
-    
-  )
-}
-
-function Gifts() {
-  const ref = useFadeIn()
-  return (
-    <section className="p3-gifts">
-      <div ref={ref} className="fade-in">
-        <Floral src="/flores4.webp" className="p3-band p3-band--sm" />
-        <Icon name="gift" className="p3-gifts__ic" />
-        <h2 className="p3-heading">Sugerencia de Regalos</h2>
-        <p className="p3-gifts__text">
-          Tu compañía en este día tan especial es el mejor regalo. Pero si
-          deseas darme un obsequio, aquí tienes algunas opciones:
-        </p>
-        <div className="p3-gifts__card">
-          <p className="p3-gifts__label">Transferencia</p>
-          <p className="p3-gifts__bank">BBVA · Karen Elizabeth González Osorio</p>
-          <p className="p3-gifts__num">Cuenta <strong>1234 5678 9012 3456</strong></p>
-          <p className="p3-gifts__num">CLABE <strong>012 580 01234567890 1</strong></p>
-        </div>
-        <div className="p3-gifts__btns">
-          <a className="p3-btn" href="#" target="_blank" rel="noopener noreferrer">Lista de Regalos · Liverpool</a>
-          <a className="p3-btn p3-btn--ghost" href="#" target="_blank" rel="noopener noreferrer">Amazon Wishlist</a>
-        </div>
       </div>
     </section>
   )
@@ -355,82 +322,35 @@ function Gifts() {
 
 function Rsvp() {
   const ref = useFadeIn()
-  const { guest, status, responder } = useGuest()
-  const [saving, setSaving] = useState(null)
-  const [saveError, setSaveError] = useState(null)
+  const { guest, status } = useGuest()
 
-  const enviar = async (asistira) => {
-    setSaving(asistira)
-    setSaveError(null)
-    try {
-      await responder(asistira)
-    } catch (e) {
-      setSaveError(e.message)
-    } finally {
-      setSaving(null)
-    }
-  }
-
-  // Sin enlace personalizado (o si falla la consulta) se mantiene el WhatsApp
-  const wa = `https://wa.me/${RSVP_WHATSAPP}?text=${encodeURIComponent('¡Hola! Confirmo mi asistencia a los XV años de Karen Elizabeth.')}`
+  const mensaje = guest?.familia
+    ? `¡Hola! Familia ${guest.familia}. Confirmamos nuestra asistencia a los XV años de Karen Elizabeth.`
+    : '¡Hola! Confirmo mi asistencia a los XV años de Karen Elizabeth.'
+  const wa = `https://wa.me/${RSVP_WHATSAPP}?text=${encodeURIComponent(mensaje)}`
 
   return (
     <section className="p3-rsvp">
       <div ref={ref} className="fade-in">
         <Icon name="whatsapp" className="p3-rsvp__ic" />
         <h2 className="p3-heading">Confirmar Asistencia</h2>
-        <p className="p3-rsvp__note">Te pedimos confirmar antes del 22 de agosto de 2026</p>
+        <p className="p3-rsvp__note">Te pedimos confirmar antes del 20 de agosto de 2026</p>
 
         {status === 'loading' && <p className="p3-rsvp__loading">Cargando tu invitación…</p>}
 
         {status === 'ready' && guest && (
-          <>
-            <div className="p3-rsvp__card">
-              <p className="p3-rsvp__familia">{guest.familia}</p>
-              <p className="p3-rsvp__boletos">
-                Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
-              </p>
-            </div>
-
-            <div className="p3-rsvp__choices">
-              <button
-                type="button"
-                className={`p3-btn p3-rsvp__choice${guest.asistira === true ? ' p3-rsvp__choice--on' : ''}`}
-                onClick={() => enviar(true)}
-                disabled={saving !== null}
-              >
-                {saving === true ? 'Guardando…' : 'Asistiré'}
-              </button>
-              <button
-                type="button"
-                className={`p3-btn p3-btn--ghost p3-rsvp__choice${guest.asistira === false ? ' p3-rsvp__choice--off' : ''}`}
-                onClick={() => enviar(false)}
-                disabled={saving !== null}
-              >
-                {saving === false ? 'Guardando…' : 'No asistiré'}
-              </button>
-            </div>
-
-            {guest.asistira === true && (
-              <p className="p3-rsvp__status p3-rsvp__status--ok">
-                ¡Gracias por confirmar! Te esperamos con mucho gusto ♡
-              </p>
-            )}
-            {guest.asistira === false && (
-              <p className="p3-rsvp__status">
-                Gracias por avisarnos. Te vamos a extrañar.
-              </p>
-            )}
-            {guest.asistira !== null && (
-              <p className="p3-rsvp__hint">Puedes cambiar tu respuesta cuando quieras.</p>
-            )}
-            {saveError && <p className="p3-rsvp__error">{saveError}</p>}
-          </>
+          <div className="p3-rsvp__card">
+            <p className="p3-rsvp__familia">{guest.familia}</p>
+            <p className="p3-rsvp__boletos">
+              Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
+            </p>
+          </div>
         )}
 
-        {(status === 'anonymous' || status === 'error') && (
-          <a className="p3-btn" href={wa} target="_blank" rel="noopener noreferrer">Confirmar aquí</a>
-        )}
+        <p className="p3-rsvp__wa-hint">Confírmanos por WhatsApp dando clic en el botón:</p>
+        <a className="p3-btn p3-btn--wa" href={wa} target="_blank" rel="noopener noreferrer">
+          Confirmar por WhatsApp
+        </a>
       </div>
     </section>
   )
@@ -459,11 +379,8 @@ export default function Page3() {
       <Itinerary />
       <Photo src="/p3-foto2.webp" />
       <DressCode />
-      <Playlist />
-      <Gifts />
       <Rsvp />
       <Footer />
-      <OptionSwitcher />
     </div>
   )
 }

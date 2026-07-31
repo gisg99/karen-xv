@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Classic from './pages/Classic'
 import Page3 from './pages/Page3'
 import Admin from './pages/Admin'
 import Welcome from './components/Welcome'
@@ -16,9 +15,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/"        element={<Invitacion><Page3 /></Invitacion>} />
-        <Route path="/clasico" element={<Invitacion><Classic /></Invitacion>} />
-        <Route path="/admin"   element={<Admin />} />
+        <Route path="/"      element={<Invitacion><Page3 /></Invitacion>} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   )

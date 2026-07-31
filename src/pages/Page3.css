@@ -177,6 +177,11 @@
 .page3 .p3-place__title { font-family: var(--p3-display); font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--p3-navy); font-size: clamp(15px, 4.2vw, 18px); margin: 0 0 .35rem; }
 .page3 .p3-place__name { font-family: var(--p3-serif); font-size: clamp(16px, 4.4vw, 19px); color: var(--p3-ink); margin: 0 0 .2rem; }
 .page3 .p3-place__addr { font-family: var(--p3-serif); font-style: italic; font-size: clamp(13px, 3.6vw, 15px); color: #5a5a5a; margin: 0 0 1rem; }
+.page3 .p3-place__time { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--p3-serif); font-size: clamp(14px, 3.8vw, 16px); color: var(--p3-ink); background: var(--p3-cream2); border: 1px solid rgba(30,67,116,0.22); border-radius: 999px; padding: 0.4rem 0.9rem; margin: 0 0 1rem; }
+.page3 .p3-place__time strong { color: var(--p3-navy-d); letter-spacing: 0.03em; }
+.page3 .p3-place__time-tag { font-family: var(--p3-display); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; font-size: clamp(10px, 2.8vw, 12px); color: #fff; background: var(--p3-navy); border-radius: 999px; padding: 0.15rem 0.55rem; }
+.page3 .p3-place__map { max-width: 380px; margin: 0 auto 1rem; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(30,60,110,0.16); border: 1px solid rgba(30,67,116,0.16); }
+.page3 .p3-place__map iframe { display: block; }
 
 /* ======================================================= Botones */
 .page3 .p3-btn {
@@ -194,22 +199,22 @@
 .page3 .p3-btn:hover { background: var(--p3-navy-d); transform: translateY(-1px); }
 .page3 .p3-btn--ghost { background: transparent; color: var(--p3-navy); border: 1px solid var(--p3-navy); }
 .page3 .p3-btn--ghost:hover { background: rgba(30,67,116,0.08); }
+.page3 .p3-btn--wa { background: #25D366; color: #05391f; font-weight: 600; }
+.page3 .p3-btn--wa:hover { background: #1ebe5b; }
 
 /* ======================================================= Itinerario */
 .page3 .p3-itin { position: relative; padding: 3rem 1.4rem 3.4rem; text-align: center; }
-.page3 .p3-itin__line { position: relative; z-index: 2; max-width: 340px; margin: 2rem auto 0; padding: 0.5rem 0; }
-.page3 .p3-itin__line::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: rgba(30,67,116,0.3); transform: translateX(-50%); }
-.page3 .p3-itin__item { position: relative; display: flex; align-items: center; gap: 0.8rem; width: 50%; padding: 0.7rem 0; }
-.page3 .p3-itin__item--l { justify-content: flex-start; margin-right: 50%; flex-direction: row; text-align: left; }
-.page3 .p3-itin__item--r { justify-content: flex-start; margin-left: 50%; flex-direction: row-reverse; text-align: right; }
-.page3 .p3-itin__item::after { content: ''; position: absolute; top: 50%; width: 14px; height: 2px; background: rgba(30,67,116,0.3); }
-.page3 .p3-itin__item--l::after { right: -1px; transform: translateY(-50%); }
-.page3 .p3-itin__item--r::after { left: -1px; transform: translateY(-50%); }
-.page3 .p3-itin__icon { flex: 0 0 auto; color: var(--p3-navy); }
-.page3 .p3-itin__ic { width: 30px; height: 30px; }
+.page3 .p3-itin__line { position: relative; z-index: 2; max-width: 400px; margin: 2rem auto 0; text-align: left; }
+.page3 .p3-itin__line::before { content: ''; position: absolute; left: 26px; top: 12px; bottom: 12px; width: 2px; background: rgba(30,67,116,0.28); }
+.page3 .p3-itin__item { position: relative; display: flex; align-items: center; gap: 1.15rem; padding: 0.7rem 0; }
+.page3 .p3-itin__icon { flex: 0 0 auto; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: var(--p3-cream2); border: 1px solid rgba(30,67,116,0.28); box-shadow: 0 4px 14px rgba(30,60,110,0.10); color: var(--p3-navy); z-index: 1; }
+.page3 .p3-itin__ic { width: 28px; height: 28px; }
 .page3 .p3-itin__txt { display: flex; flex-direction: column; }
-.page3 .p3-itin__time { font-family: var(--p3-display); font-weight: 600; letter-spacing: 0.08em; color: var(--p3-navy); font-size: clamp(13px, 3.6vw, 15px); }
-.page3 .p3-itin__label { font-family: var(--p3-display); letter-spacing: 0.16em; text-transform: uppercase; color: #666; font-size: clamp(11px, 3vw, 13px); }
+.page3 .p3-itin__time { font-family: var(--p3-display); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--p3-navy); font-size: clamp(12px, 3.2vw, 14px); }
+.page3 .p3-itin__label { font-family: var(--p3-display); color: var(--p3-ink); font-size: clamp(19px, 5vw, 23px); line-height: 1.2; }
+.page3 .p3-itin__note { display: flex; align-items: center; gap: 0.7rem; text-align: left; max-width: 400px; margin: 1.8rem auto 0; padding: 0.9rem 1.1rem; background: var(--p3-cream2); border: 1px solid rgba(30,67,116,0.22); border-left: 3px solid var(--p3-navy); border-radius: 8px; font-family: var(--p3-serif); font-size: clamp(13px, 3.6vw, 15px); line-height: 1.5; color: var(--p3-ink); }
+.page3 .p3-itin__note-ic { flex: 0 0 auto; width: 26px; height: 26px; color: var(--p3-navy); }
+.page3 .p3-itin__note strong { color: var(--p3-navy-d); }
 
 /* ======================================================= Vestimenta */
 .page3 .p3-dress { text-align: center; padding: 2.6rem 2rem; }
@@ -248,6 +253,7 @@
 .page3 .p3-rsvp { text-align: center; padding: 2.4rem 2rem 3rem; }
 .page3 .p3-rsvp__ic { width: 48px; height: 48px; color: var(--p3-navy); margin-bottom: .4rem; }
 .page3 .p3-rsvp__note { font-family: var(--p3-serif); font-style: italic; color: #555; font-size: clamp(14px, 3.8vw, 16px); margin: 0.2rem 0 1.2rem; }
+.page3 .p3-rsvp__wa-hint { font-family: var(--p3-serif); color: #444; font-size: clamp(14px, 3.8vw, 16px); margin: 0.2rem auto 1rem; max-width: 22em; }
 
 /* ======================================================= Footer */
 .page3 .p3-footer { position: relative; text-align: center; padding: 3rem 2rem 4rem; }
