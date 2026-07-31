@@ -373,7 +373,7 @@ export default function Page3() {
       <Quote />
       <Invite />
       <Countdown />
-      <Photo src="/p3-foto2.webp" />
+      <Photo src="/p3-foto3.webp" />
       <Places />
       <Photo src="/p3-foto1.webp" />
       <Itinerary />
