@@ -18,7 +18,29 @@ const FILTROS = [
 const estadoDe = (inv) =>
   inv.asistira === true ? 'confirmado' : inv.asistira === false ? 'rechazado' : 'pendiente'
 
-const ETIQUETA = { confirmado: 'Asistirá', rechazado: 'No asistirá', pendiente: 'Sin responder' }
+/* Badge de la columna "Asistirá": verde si confirma todos sus boletos, naranja
+ * si confirma menos, gris si no asiste y rojo si aún no responde. */
+function asistenciaBadge(inv) {
+  if (inv.asistira === true) {
+    const usados = inv.boletos_confirmados ?? inv.boletos
+    const parcial = inv.boletos_confirmados != null && inv.boletos_confirmados < inv.boletos
+    return { clase: parcial ? 'parcial' : 'confirmado', texto: `Asistirá con ${usados}` }
+  }
+  if (inv.asistira === false) return { clase: 'rechazado', texto: 'No asistirá' }
+  return { clase: 'pendiente', texto: 'Sin responder' }
+}
+
+/* Íconos de las acciones de la tabla (24×24, trazo con currentColor) */
+const AdmIcon = ({ name }) => {
+  const p = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }
+  const paths = {
+    copy: <><rect {...p} x="9" y="9" width="11" height="11" rx="2" /><path {...p} d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></>,
+    open: <><path {...p} d="M15 3h6v6" /><path {...p} d="M10 14 21 3" /><path {...p} d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></>,
+    trash: <><path {...p} d="M3 6h18" /><path {...p} d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path {...p} d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /><path {...p} d="M10 11v6M14 11v6" /></>,
+    check: <path {...p} d="M20 6 9 17l-5-5" />,
+  }
+  return <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">{paths[name]}</svg>
+}
 
 /* ------------------------------------------------------------------ Login */
 function Login({ onOk }) {
@@ -296,42 +318,53 @@ function Panel({ onLogout }) {
             <table className="adm-table">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Nombre (interno)</th>
                   <th>Familia (invitación)</th>
                   <th className="adm-num">Boletos</th>
                   <th>Asistirá</th>
+                  <th>ID</th>
                   <th className="adm-acts">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {visibles.map((inv) => {
-                  const estado = estadoDe(inv)
+                  const asistencia = asistenciaBadge(inv)
                   return (
                     <tr key={inv.id}>
-                      <td><code className="adm-id">{inv.id}</code></td>
                       <td>{inv.nombre}</td>
                       <td>{inv.familia}</td>
-                      <td className="adm-num">
-                        {inv.boletos}
-                        {inv.asistira === true && inv.boletos_confirmados != null && inv.boletos_confirmados !== inv.boletos && (
-                          <span className="adm-num__conf"> · usa {inv.boletos_confirmados}</span>
-                        )}
+                      <td className="adm-num">{inv.boletos}</td>
+                      <td>
+                        <span className={`adm-badge adm-badge--${asistencia.clase}`}>{asistencia.texto}</span>
                       </td>
-                      <td><span className={`adm-badge adm-badge--${estado}`}>{ETIQUETA[estado]}</span></td>
+                      <td><code className="adm-id">{inv.id}</code></td>
                       <td className="adm-acts">
-                        <button className="adm-btn adm-btn--xs" onClick={() => copiar(inv.id)}>
-                          {copiado === inv.id ? '¡Copiado!' : 'Copiar enlace'}
+                        <button
+                          className={`adm-btn adm-btn--icon${copiado === inv.id ? ' adm-btn--ok' : ''}`}
+                          onClick={() => copiar(inv.id)}
+                          title={copiado === inv.id ? '¡Copiado!' : 'Copiar enlace'}
+                          aria-label={copiado === inv.id ? 'Enlace copiado' : 'Copiar enlace'}
+                        >
+                          <AdmIcon name={copiado === inv.id ? 'check' : 'copy'} />
                         </button>
-                        <a className="adm-btn adm-btn--xs" href={enlaceDe(inv.id)} target="_blank" rel="noopener noreferrer">
-                          Abrir
+                        <a
+                          className="adm-btn adm-btn--icon"
+                          href={enlaceDe(inv.id)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Abrir invitación"
+                          aria-label="Abrir invitación"
+                        >
+                          <AdmIcon name="open" />
                         </a>
                         <button
-                          className="adm-btn adm-btn--xs adm-btn--danger"
+                          className="adm-btn adm-btn--icon adm-btn--danger"
                           onClick={() => eliminar(inv)}
                           disabled={borrando === inv.id}
+                          title="Eliminar"
+                          aria-label="Eliminar invitado"
                         >
-                          {borrando === inv.id ? '…' : 'Eliminar'}
+                          <AdmIcon name="trash" />
                         </button>
                       </td>
                     </tr>
