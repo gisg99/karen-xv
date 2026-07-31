@@ -40,8 +40,8 @@ export function useGuest() {
     return () => { alive = false }
   }, [id])
 
-  const responder = useCallback(async (asistira) => {
-    const d = await api.rsvp(id, asistira)
+  const responder = useCallback(async (asistira, boletos) => {
+    const d = await api.rsvp(id, asistira, boletos)
     setRes({ id, guest: d.invitado, error: null })
   }, [id])
 

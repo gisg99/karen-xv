@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const { data, error } = await db()
         .from(TABLE)
-        .select('id, nombre, familia, boletos, asistira, respondido_en, creado_en')
+        .select('id, nombre, familia, boletos, asistira, boletos_confirmados, respondido_en, creado_en')
         .order('creado_en', { ascending: false })
       if (error) throw error
       return res.status(200).json({ invitados: data })
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         const { data, error } = await db()
           .from(TABLE)
           .insert({ id: newId(), nombre, familia, boletos })
-          .select('id, nombre, familia, boletos, asistira, respondido_en, creado_en')
+          .select('id, nombre, familia, boletos, asistira, boletos_confirmados, respondido_en, creado_en')
           .single()
 
         if (!error) return res.status(201).json({ invitado: data })

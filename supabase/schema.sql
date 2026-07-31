@@ -20,9 +20,19 @@ create table if not exists invitados (
   -- true = asistirá · false = no asistirá · null = todavía no responde
   asistira      boolean,
 
+  -- Cuántos de sus boletos usará el invitado al confirmar. null mientras no
+  -- confirme asistencia (o si responde que no asiste). Nunca puede exceder
+  -- `boletos`; esa validación se hace en api/rsvp.js.
+  boletos_confirmados smallint check (boletos_confirmados between 1 and 20),
+
   respondido_en timestamptz,
   creado_en     timestamptz  not null default now()
 );
+
+-- Para bases ya creadas antes de agregar la columna: la añade si falta.
+alter table invitados
+  add column if not exists boletos_confirmados smallint
+  check (boletos_confirmados between 1 and 20);
 
 create index if not exists invitados_creado_en_idx on invitados (creado_en desc);
 

@@ -264,6 +264,7 @@
 .adm-table tbody tr:last-child td { border-bottom: none; }
 
 .adm-num { text-align: right; font-variant-numeric: tabular-nums; }
+.adm-num__conf { color: #2f6d4a; font-size: 12px; white-space: nowrap; }
 .adm-acts { text-align: right; white-space: nowrap; }
 .adm-acts .adm-btn + .adm-btn { margin-left: 0.35rem; }
 

@@ -386,12 +386,20 @@ function RSVP() {
   const { guest, status, responder } = useGuest()
   const [saving, setSaving] = useState(null)
   const [saveError, setSaveError] = useState(null)
+  // `elegidos` es null hasta que el invitado toca el selector; mientras tanto se
+  // muestra su respuesta previa o, si aún no responde, todos sus boletos.
+  const [elegidos, setElegidos] = useState(null)
+
+  const max = guest?.boletos ?? 1
+  const cuantos = elegidos ?? guest?.boletos_confirmados ?? guest?.boletos ?? 1
+
+  const ajustar = (delta) => setElegidos(Math.min(max, Math.max(1, cuantos + delta)))
 
   const enviar = async (asistira) => {
     setSaving(asistira)
     setSaveError(null)
     try {
-      await responder(asistira)
+      await responder(asistira, asistira ? cuantos : undefined)
     } catch (e) {
       setSaveError(e.message)
     } finally {
@@ -419,6 +427,30 @@ function RSVP() {
               Tienes <strong>{guest.boletos}</strong> {guest.boletos === 1 ? 'lugar reservado' : 'lugares reservados'}
             </p>
 
+            {guest.boletos > 1 && (
+              <div className="rsvp__count">
+                <span className="rsvp__count-lbl">¿Cuántos asistirán?</span>
+                <div className="rsvp__stepper">
+                  <button
+                    type="button"
+                    className="rsvp__step"
+                    onClick={() => ajustar(-1)}
+                    disabled={cuantos <= 1 || saving !== null}
+                    aria-label="Un boleto menos"
+                  >−</button>
+                  <span className="rsvp__count-num" aria-live="polite">{cuantos}</span>
+                  <button
+                    type="button"
+                    className="rsvp__step"
+                    onClick={() => ajustar(1)}
+                    disabled={cuantos >= max || saving !== null}
+                    aria-label="Un boleto más"
+                  >+</button>
+                </div>
+                <span className="rsvp__count-of">de {guest.boletos}</span>
+              </div>
+            )}
+
             <div className="rsvp__choices">
               <button
                 type="button"
@@ -426,7 +458,11 @@ function RSVP() {
                 onClick={() => enviar(true)}
                 disabled={saving !== null}
               >
-                {saving === true ? 'Guardando…' : 'Asistiré'}
+                {saving === true
+                  ? 'Guardando…'
+                  : guest.boletos > 1
+                    ? `Asistiré con ${cuantos} ${cuantos === 1 ? 'boleto' : 'boletos'}`
+                    : 'Asistiré'}
               </button>
               <button
                 type="button"
@@ -440,7 +476,11 @@ function RSVP() {
 
             {guest.asistira === true && (
               <p className="rsvp__status rsvp__status--ok">
-                ¡Gracias por confirmar! Te esperamos con mucho gusto ♡
+                ¡Gracias por confirmar
+                {guest.boletos_confirmados
+                  ? ` ${guest.boletos_confirmados} ${guest.boletos_confirmados === 1 ? 'boleto' : 'boletos'}`
+                  : ''}
+                ! Te esperamos con mucho gusto ♡
               </p>
             )}
             {guest.asistira === false && (

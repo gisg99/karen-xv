@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   try {
     const { data, error } = await db()
       .from(TABLE)
-      .select('id, familia, boletos, asistira')
+      .select('id, familia, boletos, asistira, boletos_confirmados')
       .eq('id', id)
       .maybeSingle()
 
