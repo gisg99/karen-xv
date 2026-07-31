@@ -25,7 +25,7 @@ const RECEPCION = {
 
 const ITINERARY = [
   { time: '7:00 PM',  label: 'Misa',              icon: 'church' },
-  { time: '8:30 PM',  label: 'Estar en el salón', icon: 'pin' },
+  { time: '8:30 PM',  label: 'Nos reunimos en el salón', icon: 'pin' },
   { time: '9:00 PM',  label: 'Recepción',         icon: 'cheers' },
   { time: '9:30 PM',  label: 'Cena',              icon: 'dinner' },
   { time: '10:30 PM', label: 'Vals',              icon: 'dance' },
@@ -375,7 +375,7 @@ export default function Page3() {
       <Countdown />
       <Photo src="/p3-foto3.webp" />
       <Places />
-      <Photo src="/p3-foto1.webp" />
+      <Photo src="/p3-foto4.webp" />
       <Itinerary />
       <Photo src="/p3-foto2.webp" />
       <DressCode />
