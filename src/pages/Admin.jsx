@@ -2,12 +2,6 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import './Admin.css'
 import { api } from '../lib/api'
 
-/* Rutas de los dos diseños, para armar el enlace que se le manda al invitado */
-const DISENOS = [
-  { path: '/',        label: 'Opción 3' },
-  { path: '/clasico', label: 'Clásico' },
-]
-
 const FILTROS = [
   { key: 'todos',      label: 'Todos' },
   { key: 'confirmado', label: 'Confirmados' },
@@ -174,7 +168,6 @@ function Panel({ onLogout }) {
   const [refrescando, setRefrescando] = useState(false)
   const [error, setError] = useState(null)
   const [filtro, setFiltro] = useState('todos')
-  const [diseno, setDiseno] = useState(DISENOS[0].path)
   const [copiado, setCopiado] = useState(null)
   const [borrando, setBorrando] = useState(null)
 
@@ -219,7 +212,7 @@ function Panel({ onLogout }) {
     [lista, filtro]
   )
 
-  const enlaceDe = (id) => `${window.location.origin}${diseno}?id=${id}`
+  const enlaceDe = (id) => `${window.location.origin}/?id=${id}`
 
   // Abre WhatsApp con el mensaje y el enlace personalizado ya listos; sin número
   // fijo para que quien manda elija el contacto correcto del invitado.
@@ -299,13 +292,6 @@ function Panel({ onLogout }) {
                 </button>
               ))}
             </div>
-
-            <label className="adm-select">
-              Enlace del diseño
-              <select value={diseno} onChange={(e) => setDiseno(e.target.value)}>
-                {DISENOS.map((d) => <option key={d.path} value={d.path}>{d.label}</option>)}
-              </select>
-            </label>
 
             <button className="adm-btn adm-btn--ghost" onClick={refrescar} disabled={refrescando}>
               {refrescando ? 'Actualizando…' : 'Actualizar'}

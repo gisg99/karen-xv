@@ -236,25 +236,6 @@
 .adm-tab:hover { color: var(--a-text); }
 .adm-tab--on { background: var(--a-panel-2); color: var(--a-text); }
 
-.adm-select {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.76rem;
-  color: var(--a-dim);
-  white-space: nowrap;
-}
-.adm-select select {
-  background: var(--a-bg);
-  border: 1px solid var(--a-line);
-  border-radius: 7px;
-  color: var(--a-text);
-  font: inherit;
-  font-size: 0.8rem;
-  padding: 0.36rem 0.5rem;
-}
-.adm-select select:focus { outline: none; border-color: var(--a-accent); }
-
 /* ---------------------------------------------------------------- Tabla */
 .adm-table-wrap { overflow-x: auto; margin: 0 -0.3rem; padding: 0 0.3rem; }
 
